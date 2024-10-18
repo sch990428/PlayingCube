@@ -13,7 +13,7 @@ public class ResourceManager : Singleton<ResourceManager>
 		return resource;
 	}
 
-	public GameObject Instantiate(string path, Transform parent)
+	public GameObject Instantiate(string path, Transform parent = null)
 	{
 		GameObject original = Load<GameObject>(path);
 

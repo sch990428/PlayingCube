@@ -11,20 +11,32 @@ public class MenuSelector : Selector<GameObject>
 		items.GetFront().SetActive(true);
 	}
 
-	public override void OnBeginDrag(PointerEventData eventData)
+	public override void OnEndDrag(PointerEventData eventData)
 	{
-		if (eventData.delta.x > 0)
+		if (!isDragging) { return; }
+
+		switch (dragDicrection)
 		{
-			// 오른쪽
-			items.SlideRight();
-		}
-		else if (eventData.delta.x < 0)
-		{
-			// 왼쪽
-			items.SlideLeft();
+			case DragDicrection.None:
+
+			break;
+			case DragDicrection.DragRight:
+				items.SlideRight();
+				break;
+			case DragDicrection.DragLeft:
+				items.SlideLeft();
+				break;
 		}
 
 		items.GetLast().SetActive(false);
 		items.GetFront().SetActive(true);
+
+		isDragging = false;
+	}
+
+	public override void OnPointerClick(PointerEventData eventData)
+	{
+		if (isDragging) { return; }
+		Debug.Log("게임 진입");
 	}
 }

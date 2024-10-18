@@ -1,14 +1,34 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuSelector : Selector<GameObject>
 {
+	public TMP_Text ModeName;
+	public TMP_Text ModeDescription;
+
+	[SerializeField]
+	private Transform menuSlots;
+
+	private Dictionary<int, Data.GameMode> modeDict;
+
 	public override void Awake()
 	{
 		base.Awake();
-		items.GetFront().SetActive(true);
+
+		modeDict = LobbyManager.Instance.ModeDict;
+
+		foreach (KeyValuePair<int, Data.GameMode> mode in modeDict)
+		{
+			GameObject go = ResourceManager.Instance.Instantiate($"Prefabs/UI/ModeThumbnails/{mode.Value.ModeThumbnailPath}", menuSlots);
+			items.AddLast(new KeyValuePair<int, GameObject>(mode.Key, go));
+			go.SetActive(false);
+			itemCount++;
+		}
+
+		items.GetFront().Value.SetActive(true);
 	}
 
 	public override void OnEndDrag(PointerEventData eventData)
@@ -28,8 +48,11 @@ public class MenuSelector : Selector<GameObject>
 				break;
 		}
 
-		items.GetLast().SetActive(false);
-		items.GetFront().SetActive(true);
+		items.GetLast().Value.SetActive(false);
+		items.GetFront().Value.SetActive(true);
+
+		ModeName.text = modeDict[items.GetFront().Key].ModeName;
+		ModeDescription.text = modeDict[items.GetFront().Key].ModeDescription;
 
 		isDragging = false;
 	}

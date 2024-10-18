@@ -15,7 +15,8 @@ public class Selector<T> : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 	[SerializeField]
 	protected List<T> itemlist;
 
-	protected Deque<T> items;
+	protected Deque<KeyValuePair<int, T>> items;
+	protected int itemCount;
 
 	protected DragDicrection dragDicrection;
 	protected bool isDragging = false;
@@ -24,11 +25,8 @@ public class Selector<T> : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
 	public virtual void Awake()
 	{
-		items = new Deque<T>();
-		foreach (T item in itemlist)
-		{
-			items.AddLast(item);
-		}
+		itemCount = 0;
+		items = new Deque<KeyValuePair<int, T>>();
 	}
 
 	public virtual void OnBeginDrag(PointerEventData eventData)

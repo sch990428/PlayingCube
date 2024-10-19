@@ -42,7 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -150,10 +151,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1387967456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -82, y: 288}
-  m_SizeDelta: {x: 862.16, y: 68.88}
+  m_AnchorMin: {x: 0, y: 0.522496}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 239, y: 49.000008}
+  m_SizeDelta: {x: 416.15997, y: -356.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &136783221
 MonoBehaviour:
@@ -175,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD30C\uB780\uC0C9 \uC824\uB9AC\uB9CC \uB4F1\uC7A5\uD569\uB2C8\uB2E4"
+  m_text: "\uBAA8\uB4DC \uC124\uBA85"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e2109937fda00304eac6cd593e60e065, type: 2}
   m_sharedMaterial: {fileID: 4853433281854970756, guid: e2109937fda00304eac6cd593e60e065, type: 2}
@@ -202,8 +203,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -544,10 +545,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1387967456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -82, y: 382}
-  m_SizeDelta: {x: 862.16, y: 68.88}
+  m_AnchorMin: {x: 0, y: 0.522496}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 235, y: 149.5}
+  m_SizeDelta: {x: 416.15997, y: -356.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &506486871
 MonoBehaviour:
@@ -569,7 +570,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC2A4\uD30C\uC774\uB354 <sub>\uC26C\uC6C0</sub>"
+  m_text: "\uBAA8\uB4DC \uC81C\uBAA9"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d2c7cf4f66492f841839455ef3f64ebd, type: 2}
   m_sharedMaterial: {fileID: 7215934454503391575, guid: d2c7cf4f66492f841839455ef3f64ebd, type: 2}
@@ -596,8 +597,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64
-  m_fontSizeBase: 64
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1266,7 +1267,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1135.99, y: 1135.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628660355

@@ -10,14 +10,6 @@ public class LobbyManager : Singleton<LobbyManager>
 	{
 		base.Awake();
 
-		ModeDict = new Dictionary<int, Data.GameMode>();
-
-		string modeJson = ResourceManager.Instance.Load<TextAsset>("Datas/gamemodes").text;
-		List<Data.GameMode> list = JsonConvert.DeserializeObject<List<Data.GameMode>>(modeJson);
-		
-		foreach (Data.GameMode mode in list)
-		{
-			ModeDict.Add(mode.ModeId, mode);
-		}
+		ModeDict = DataManager.Instance.LoadJsonToDict<Data.GameMode>("Datas/gamemodes");
 	}
 }

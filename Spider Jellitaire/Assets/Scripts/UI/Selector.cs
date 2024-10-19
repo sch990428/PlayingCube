@@ -8,8 +8,8 @@ public class Selector<T> : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 	public enum DragDicrection
 	{
 		None,
-		DragLeft,
-		DragRight
+		DragToLeft,
+		DragToRight
 	}
 
 	[SerializeField]
@@ -46,12 +46,12 @@ public class Selector<T> : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 		if (eventData.delta.x > 0)
 		{
 			// ¿À¸¥ÂÊ
-			dragDicrection = DragDicrection.DragRight;
+			dragDicrection = DragDicrection.DragToRight;
 		}
 		else if (eventData.delta.x < 0)
 		{
 			// ¿ÞÂÊ
-			dragDicrection = DragDicrection.DragLeft;
+			dragDicrection = DragDicrection.DragToLeft;
 		}
 	}
 

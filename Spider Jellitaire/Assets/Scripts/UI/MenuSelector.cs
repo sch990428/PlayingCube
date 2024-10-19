@@ -28,7 +28,16 @@ public class MenuSelector : Selector<GameObject>
 			itemCount++;
 		}
 
+		UpdateSlot();
+	}
+
+	public void UpdateSlot()
+	{
+		items.GetLast().Value.SetActive(false);
 		items.GetFront().Value.SetActive(true);
+
+		ModeName.text = modeDict[items.GetFront().Key].ModeName;
+		ModeDescription.text = modeDict[items.GetFront().Key].ModeDescription;
 	}
 
 	public override void OnEndDrag(PointerEventData eventData)
@@ -48,11 +57,7 @@ public class MenuSelector : Selector<GameObject>
 				break;
 		}
 
-		items.GetLast().Value.SetActive(false);
-		items.GetFront().Value.SetActive(true);
-
-		ModeName.text = modeDict[items.GetFront().Key].ModeName;
-		ModeDescription.text = modeDict[items.GetFront().Key].ModeDescription;
+		UpdateSlot();
 
 		isDragging = false;
 	}

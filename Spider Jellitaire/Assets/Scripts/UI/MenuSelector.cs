@@ -43,17 +43,20 @@ public class MenuSelector : Selector<GameObject>
 	public override void OnEndDrag(PointerEventData eventData)
 	{
 		if (!isDragging) { return; }
-
+		Debug.Log(dragDicrection);
 		switch (dragDicrection)
 		{
 			case DragDicrection.None:
 
 			break;
-			case DragDicrection.DragRight:
+			case DragDicrection.DragToRight:
+				// 이전으로
+				items.GetFront().Value.SetActive(false);
 				items.SlideRight();
 				break;
-			case DragDicrection.DragLeft:
-				items.SlideLeft();
+			case DragDicrection.DragToLeft:
+				// 다음으로
+				items.SlideLeft();			
 				break;
 		}
 

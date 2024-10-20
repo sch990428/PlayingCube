@@ -6,17 +6,6 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-	public enum JellyType
-	{
-		Unknown,
-		Blue,
-		Green,
-		Red,
-		Yellow
-	}
-
-	public Dictionary<JellyType, Color32> JellyColor;
-
 	private PlayerInput playerInput;
 
 	private InputAction touchPositionAction;
@@ -30,6 +19,7 @@ public class GameManager : MonoBehaviour
 		{
 			GameObject go = ResourceManager.Instance.Instantiate("Prefabs/GameEntity/Jelly");
 			go.transform.position = new Vector3(i - 3, 0, 6);
+			go.GetComponent<Jelly>().ChangeType(Define.JellyType.Green);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,10 @@ public class InputManager : Singleton<InputManager>
 {
 	[SerializeField]
 	private GameObject JellyObject;
+
+	public event Action<Jelly> OnTouchPressed;
+	public event Action<Vector3> OnTouching;
+	public event Action<Vector3> OnTouchReleased;
 
 	private PlayerInput playerInput;
 	private InputAction touchPositionAction;
@@ -50,32 +55,23 @@ public class InputManager : Singleton<InputManager>
 		{
 			if (hit.collider.CompareTag("JellyEntity"))
 			{
-				targetJelly = hit.collider.GetComponent<Jelly>();
-				targetJelly.isMoving = true;
-				GameManager.Instance.anyJellyMoving = true;
+				OnTouchPressed.Invoke(hit.collider.gameObject.GetComponent<Jelly>());
 			}
 		}
 	}
 
 	private void TouchReleased(InputAction.CallbackContext context)
 	{
-		if (targetJelly != null)
-		{
-			targetJelly.isMoving = false;
-			GameManager.Instance.anyJellyMoving = false;
-			targetJelly.UpdatePos();
-			targetJelly = null;
-		}
+		Vector3 touchPos = Camera.main.ScreenToWorldPoint(touchPositionAction.ReadValue<Vector2>());
+		touchPos.y = 0;
+
+		OnTouchReleased.Invoke(touchPos);
 	}
 
 	private void Touching(InputAction.CallbackContext context)
 	{
 		Vector3 touchPos = Camera.main.ScreenToWorldPoint(touchPositionAction.ReadValue<Vector2>());
 		touchPos.y = 0;
-
-		if (targetJelly != null)
-		{
-			targetJelly.transform.position = touchPos;
-		}
+		OnTouching.Invoke(touchPos);
 	}
 }

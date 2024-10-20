@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuSelector : Selector<GameObject>
@@ -68,6 +69,6 @@ public class MenuSelector : Selector<GameObject>
 	public override void OnPointerClick(PointerEventData eventData)
 	{
 		if (isDragging) { return; }
-		Debug.Log("게임 진입");
+		SceneManager.LoadScene("SpiderScene");
 	}
 }

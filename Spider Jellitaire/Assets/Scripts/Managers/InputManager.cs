@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
 	[SerializeField]
 	private GameObject JellyObject;
@@ -40,7 +40,7 @@ public class InputManager : MonoBehaviour
 		Vector3 touchPos = Camera.main.ScreenToWorldPoint(touchPositionAction.ReadValue<Vector2>());
 		touchPos.y = 0;
 
-		Debug.Log(touchPos);
+		// Debug.Log(touchPos);
 
 		RaycastHit hit;
 		Ray ray = Camera.main.ScreenPointToRay(touchPositionAction.ReadValue<Vector2>());
@@ -52,6 +52,7 @@ public class InputManager : MonoBehaviour
 			{
 				targetJelly = hit.collider.GetComponent<Jelly>();
 				targetJelly.isMoving = true;
+				GameManager.Instance.anyJellyMoving = true;
 			}
 		}
 	}
@@ -61,6 +62,8 @@ public class InputManager : MonoBehaviour
 		if (targetJelly != null)
 		{
 			targetJelly.isMoving = false;
+			GameManager.Instance.anyJellyMoving = false;
+			targetJelly.UpdatePos();
 			targetJelly = null;
 		}
 	}

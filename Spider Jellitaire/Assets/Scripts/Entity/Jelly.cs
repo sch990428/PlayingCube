@@ -25,7 +25,7 @@ public class Jelly : MonoBehaviour
 
 	private void OnDisable()
 	{
-		if (InputManager.Instance != null)
+		if (InputManager.hasInstance())
 		{
 			InputManager.Instance.OnTouchPressed -= TouchPressed;
 			InputManager.Instance.OnTouching -= Touching;

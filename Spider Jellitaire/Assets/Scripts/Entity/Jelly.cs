@@ -25,9 +25,12 @@ public class Jelly : MonoBehaviour
 
 	private void OnDisable()
 	{
-		InputManager.Instance.OnTouchPressed -= TouchPressed;
-		InputManager.Instance.OnTouching -= Touching;
-		InputManager.Instance.OnTouchReleased -= TouchReleased;
+		if (InputManager.Instance != null)
+		{
+			InputManager.Instance.OnTouchPressed -= TouchPressed;
+			InputManager.Instance.OnTouching -= Touching;
+			InputManager.Instance.OnTouchReleased -= TouchReleased;
+		}
 	}
 
 	public void UpdatePos()
@@ -73,8 +76,7 @@ public class Jelly : MonoBehaviour
 			{
 				if (hit.collider.CompareTag("JellyEntity"))
 				{
-					Debug.Log("상단에 젤리가 있어요");
-				}
+					Debug.Log($"상단에 젤리가 있어요 {hit.collider.name}");				}
 			}
 			this.gameObject.GetComponent<Collider>().enabled = true;
 		}

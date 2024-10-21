@@ -983,6 +983,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LineRoots: {fileID: 1789010514}
   anyJellyMoving: 0
+  Column: 7
+  BottomCastOriginZ: -20
 --- !u!4 &985788955
 Transform:
   m_ObjectHideFlags: 0

@@ -123,6 +123,8 @@ public class Jelly : MonoBehaviour
 			gameObject.GetComponent<Collider>().enabled = true;
 			UpdatePos(prevPosition);
 		}
+
+		GameManager.Instance.UpdateLastJelly();
 	}
 
 	public bool IsHierarchy()
@@ -142,5 +144,46 @@ public class Jelly : MonoBehaviour
 				return false;
 			}
 		}
+	}
+
+	public bool IsHierarchyReverse()
+	{
+		if (Number == 1)
+		{
+			return true;
+		}
+
+		if (Parent == null)
+		{
+			return false;
+		}
+		else
+		{
+			if (Parent.Number == Number - 1)
+			{
+				return Parent.IsHierarchyReverse();
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
+	public void Pop()
+	{
+		if (Number == 1)
+		{
+			if (Parent != null)
+			{
+				Parent.Child = null;
+			}
+		}
+		else
+		{	
+			Parent.Pop();
+		}
+
+		ResourceManager.Instance.Destroy(gameObject);
 	}
 }

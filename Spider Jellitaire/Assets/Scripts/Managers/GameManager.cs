@@ -8,13 +8,6 @@ public class GameManager : Singleton<GameManager>
 {
 	public bool anyJellyMoving;
 
-	private PlayerInput playerInput;
-
-	private Jelly[,] stage = new Jelly[7, 16];
-
-	public int gridX = 34;
-	public int gridY = 34;
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -22,9 +15,10 @@ public class GameManager : Singleton<GameManager>
 		for (int i = 0; i < 7; i++)
 		{
 			GameObject go = ResourceManager.Instance.Instantiate("Prefabs/GameEntity/Jelly");
-			stage[i, 0] = go.AddComponent<Jelly>();
 			go.transform.position = new Vector3(i - 3, 0, 6);
-			go.GetComponent<Jelly>().ChangeType(Define.JellyType.Green);
+			Jelly j = go.GetComponent<Jelly>();
+			j.Number = Random.Range(1, 6);
+			j.ChangeType(Define.JellyType.Green);
 			go.name += i;
 		}
 	}

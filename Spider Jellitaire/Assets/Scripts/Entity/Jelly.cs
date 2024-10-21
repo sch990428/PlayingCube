@@ -1,15 +1,20 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.DualShock.LowLevel;
 
 public class Jelly : MonoBehaviour
 {
+	[SerializeField]
+	TMP_Text NumberText;
+
 	public bool isMoving;
 
-	public Define.JellyType type;
+	public Define.JellyType Type;
+	public int Number;
 
-	Renderer jellyRenderer;
+	private Renderer jellyRenderer;
 
 	private void Awake()
 	{
@@ -41,7 +46,9 @@ public class Jelly : MonoBehaviour
 
 	public void ChangeType(Define.JellyType t)
 	{
+		Type = t;
 		jellyRenderer.material.color = Define.JellyColor[t];
+		NumberText.text = $"{Number}";
 	}
 
 	private void TouchPressed(Jelly selectedJelly)

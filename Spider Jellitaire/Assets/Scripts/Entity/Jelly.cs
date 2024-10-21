@@ -15,6 +15,7 @@ public class Jelly : MonoBehaviour
 	public int Number;
 
 	private Renderer jellyRenderer;
+	private Vector3 prevPosition;
 
 	private void Awake()
 	{
@@ -38,10 +39,9 @@ public class Jelly : MonoBehaviour
 		}
 	}
 
-	public void UpdatePos()
+	public void UpdatePos(Vector3 pos)
 	{
-		Vector3 pos = transform.position;
-		transform.position = new Vector3(Mathf.RoundToInt(pos.x), 0, Mathf.RoundToInt(pos.z));
+		transform.position = new Vector3(pos.x, pos.y, pos.z);
 	}
 
 	public void ChangeType(Define.JellyType t)
@@ -57,6 +57,7 @@ public class Jelly : MonoBehaviour
 		{
 			isMoving = true;
 			GameManager.Instance.anyJellyMoving = true;
+			prevPosition = transform.position;
 		}
 	}
 
@@ -74,18 +75,26 @@ public class Jelly : MonoBehaviour
 		{
 			isMoving = false;
 			GameManager.Instance.anyJellyMoving = false;
-			UpdatePos();
+
+			this.gameObject.GetComponent<Collider>().enabled = false;
 
 			RaycastHit hit;
-			Debug.DrawRay(transform.position, Vector3.forward, Color.red, 1f);
-			this.gameObject.GetComponent<Collider>().enabled = false;
+			// Debug.DrawRay(transform.position, Vector3.forward * 1f, Color.red, 1.5f);
+
 			if (Physics.Raycast(transform.position, Vector3.forward, out hit, 1f))
 			{
 				if (hit.collider.CompareTag("JellyEntity"))
 				{
-					Debug.Log($"상단에 젤리가 있어요 {hit.collider.name}");				}
+					UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -1f));
+					Debug.Log($"상단에 젤리가 있어요 {hit.collider.name}");
+					this.transform.SetParent(hit.collider.transform, true);
+					this.gameObject.GetComponent<Collider>().enabled = true;
+					return;
+				}
 			}
+
 			this.gameObject.GetComponent<Collider>().enabled = true;
+			UpdatePos(prevPosition);
 		}
 	}
 }

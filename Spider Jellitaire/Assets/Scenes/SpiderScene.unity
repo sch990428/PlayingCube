@@ -407,8 +407,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anyJellyMoving: 0
-  gridX: 34
-  gridY: 34
 --- !u!4 &985788955
 Transform:
   m_ObjectHideFlags: 0

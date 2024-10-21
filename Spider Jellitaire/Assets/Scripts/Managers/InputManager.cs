@@ -49,14 +49,9 @@ public class InputManager : Singleton<InputManager>
 
 	private void TouchPressed(InputAction.CallbackContext context)
 	{
-		Vector3 touchPos = Camera.main.ScreenToWorldPoint(touchPositionAction.ReadValue<Vector2>());
-		touchPos.y = 0;
-
-		// Debug.Log(touchPos);
-
 		RaycastHit hit;
 		Ray ray = Camera.main.ScreenPointToRay(touchPositionAction.ReadValue<Vector2>());
-		Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
+		// Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
 
 		if (Physics.Raycast(ray, out hit))
 		{
@@ -77,8 +72,16 @@ public class InputManager : Singleton<InputManager>
 
 	private void Touching(InputAction.CallbackContext context)
 	{
-		Vector3 touchPos = Camera.main.ScreenToWorldPoint(touchPositionAction.ReadValue<Vector2>());
-		touchPos.y = 0;
-		OnTouching.Invoke(touchPos);
+		Vector2 touchPosition = touchPositionAction.ReadValue<Vector2>();
+		Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+
+		// y = 0.5 평면을 정의해 이곳으로 레이캐스팅을 한 좌표를 얻어온다
+		Plane plane = new Plane(Vector3.up, new Vector3(0, 0, 0));
+
+		if (plane.Raycast(ray, out float enter))
+		{
+			Vector3 hitPoint = ray.GetPoint(enter);
+			OnTouching.Invoke(hitPoint);
+		}
 	}
 }

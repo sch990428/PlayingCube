@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.DualShock.LowLevel;
@@ -13,6 +14,9 @@ public class Jelly : MonoBehaviour
 
 	public Define.JellyType Type;
 	public int Number;
+
+	public Jelly Parent;
+	public Jelly Child;
 
 	private Renderer jellyRenderer;
 	private Vector3 prevPosition;
@@ -53,7 +57,7 @@ public class Jelly : MonoBehaviour
 
 	private void TouchPressed(Jelly selectedJelly)
 	{
-		if (selectedJelly == this)
+		if (selectedJelly == this && IsHierarchy())
 		{
 			isMoving = true;
 			GameManager.Instance.anyJellyMoving = true;
@@ -79,22 +83,64 @@ public class Jelly : MonoBehaviour
 			this.gameObject.GetComponent<Collider>().enabled = false;
 
 			RaycastHit hit;
-			// Debug.DrawRay(transform.position, Vector3.forward * 1f, Color.red, 1.5f);
 
 			if (Physics.Raycast(transform.position, Vector3.forward, out hit, 1f))
 			{
 				if (hit.collider.CompareTag("JellyEntity"))
 				{
-					UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -1f));
-					Debug.Log($"상단에 젤리가 있어요 {hit.collider.name}");
-					this.transform.SetParent(hit.collider.transform, true);
-					this.gameObject.GetComponent<Collider>().enabled = true;
-					return;
+					if (hit.collider.name.Equals("LineRoot"))
+					{
+						UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -1f));
+						if (Parent != null)
+						{
+							Parent.Child = null;
+						}
+						Parent = null;
+						transform.SetParent(hit.collider.transform, true);
+						gameObject.GetComponent<Collider>().enabled = true;
+						return;
+					}
+					else
+					{
+						Jelly parentJelly = hit.collider.GetComponent<Jelly>();
+						if (parentJelly.Type == Type && parentJelly.Number == Number - 1 && parentJelly.transform)
+						{
+							UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -1f));
+							if (Parent != null)
+							{
+								Parent.Child = null;
+							}
+							Parent = parentJelly;
+							parentJelly.Child = this;
+							transform.SetParent(hit.collider.transform, true);
+							gameObject.GetComponent<Collider>().enabled = true;
+							return;
+						}
+					}
 				}
 			}
 
-			this.gameObject.GetComponent<Collider>().enabled = true;
+			gameObject.GetComponent<Collider>().enabled = true;
 			UpdatePos(prevPosition);
+		}
+	}
+
+	public bool IsHierarchy()
+	{
+		if (Child == null)
+		{
+			return true;
+		}
+		else
+		{
+			if (Child.Number == Number + 1)
+			{
+				return Child.IsHierarchy();
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }

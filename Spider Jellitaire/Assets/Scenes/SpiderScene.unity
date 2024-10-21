@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 141998117}
   - component: {fileID: 141998116}
   m_Layer: 0
-  m_Name: LineRoot2
+  m_Name: LineRoot
   m_TagString: JellyEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 385953150}
   - component: {fileID: 385953149}
   m_Layer: 0
-  m_Name: LineRoot4
+  m_Name: LineRoot
   m_TagString: JellyEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -857,7 +857,7 @@ GameObject:
   - component: {fileID: 890356127}
   - component: {fileID: 890356126}
   m_Layer: 0
-  m_Name: LineRoot1
+  m_Name: LineRoot
   m_TagString: JellyEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -981,6 +981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f8935a7cfbb958428c4d405e40bc601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LineRoots: {fileID: 1789010514}
   anyJellyMoving: 0
 --- !u!4 &985788955
 Transform:
@@ -1010,7 +1011,7 @@ GameObject:
   - component: {fileID: 987429341}
   - component: {fileID: 987429340}
   m_Layer: 0
-  m_Name: LineRoot7
+  m_Name: LineRoot
   m_TagString: JellyEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1226,7 +1227,7 @@ GameObject:
   - component: {fileID: 1664231903}
   - component: {fileID: 1664231902}
   m_Layer: 0
-  m_Name: LineRoot6
+  m_Name: LineRoot
   m_TagString: JellyEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1481,7 +1482,7 @@ GameObject:
   - component: {fileID: 1816801813}
   - component: {fileID: 1816801812}
   m_Layer: 0
-  m_Name: LineRoot5
+  m_Name: LineRoot
   m_TagString: JellyEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1589,7 +1590,7 @@ GameObject:
   - component: {fileID: 2063077995}
   - component: {fileID: 2063077994}
   m_Layer: 0
-  m_Name: LineRoot3
+  m_Name: LineRoot
   m_TagString: JellyEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

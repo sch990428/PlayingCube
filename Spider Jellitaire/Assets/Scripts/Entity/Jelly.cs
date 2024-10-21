@@ -103,7 +103,7 @@ public class Jelly : MonoBehaviour
 					else
 					{
 						Jelly parentJelly = hit.collider.GetComponent<Jelly>();
-						if (parentJelly.Type == Type && parentJelly.Number == Number - 1 && parentJelly.transform)
+						if (parentJelly.Type == Type && parentJelly.Number == Number - 1 && parentJelly.Child == null)
 						{
 							UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -1f));
 							if (Parent != null)

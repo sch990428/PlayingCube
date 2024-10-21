@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,11 +17,17 @@ public class InputManager : Singleton<InputManager>
 	private InputAction touchPressAction;
 	private InputAction touchingAction;
 
-	Jelly targetJelly;
-
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
+
 		playerInput = GetComponent<PlayerInput>();
+		if (playerInput == null)
+		{
+			playerInput = gameObject.AddComponent<PlayerInput>();
+			playerInput.actions = ResourceManager.Instance.Load<InputActionAsset>("PlayerActions");
+		}
+
 		touchPressAction = playerInput.actions["TouchPressed"];
 		touchPositionAction = playerInput.actions["TouchPosition"];
 		touchingAction = playerInput.actions["Touching"];

@@ -15,12 +15,9 @@ public class GameManager : Singleton<GameManager>
 	public int gridX = 34;
 	public int gridY = 34;
 
-	private InputAction touchPositionAction;
-	private InputAction touchPressedAction;
-
-	private void Awake()
+	protected override void Awake()
 	{
-		playerInput = GetComponent<PlayerInput>();
+		base.Awake();
 
 		for (int i = 0; i < 7; i++)
 		{
@@ -28,6 +25,7 @@ public class GameManager : Singleton<GameManager>
 			stage[i, 0] = go.AddComponent<Jelly>();
 			go.transform.position = new Vector3(i - 3, 0, 6);
 			go.GetComponent<Jelly>().ChangeType(Define.JellyType.Green);
+			go.name += i;
 		}
 	}
 }

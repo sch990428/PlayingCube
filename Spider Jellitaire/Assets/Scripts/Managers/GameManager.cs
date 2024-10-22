@@ -11,12 +11,16 @@ public class GameManager : Singleton<GameManager>
 	[SerializeField]
 	private GameObject LineRoots;
 
+	[SerializeField]
+	private Score UI_Score;
+
+	public int score = 0;
 	public bool anyJellyMoving;
 
 	public int Column = 7;
 	public float BottomCastOriginZ = -20f;
 
-	private Dictionary<int, Jelly> bottomJellies;
+	public Dictionary<int, Jelly> bottomJellies;
 
 	protected override void Awake()
 	{
@@ -26,6 +30,8 @@ public class GameManager : Singleton<GameManager>
 		{
 			bottomJellies[i] = null;
 		}
+
+		UI_Score.ScoreText.text = score.ToString();
 	}
 
 	private void Start()
@@ -123,13 +129,16 @@ public class GameManager : Singleton<GameManager>
 
 	public void TryPop()
 	{
-		foreach (KeyValuePair<int, Jelly> jelly in bottomJellies)
+		for (int i = 0; i < Column; i++)
 		{
-			if (jelly.Value != null && jelly.Value.Number == 5)
+			if (bottomJellies[i] != null && bottomJellies[i].Number == 5)
 			{
-				if (jelly.Value.IsHierarchyReverse())
+				if (bottomJellies[i].IsHierarchyReverse())
 				{
-					jelly.Value.Pop();
+					Debug.Log("ÆË");
+					bottomJellies[i].Pop(i);
+					score++;
+					UI_Score.ScoreText.text = score.ToString();
 				}
 			}
 		}

@@ -90,7 +90,7 @@ public class Jelly : MonoBehaviour
 				{
 					if (hit.collider.name.Equals("LineRoot"))
 					{
-						UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -1f));
+						UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -0.75f));
 						if (Parent != null)
 						{
 							Parent.Child = null;
@@ -170,18 +170,23 @@ public class Jelly : MonoBehaviour
 		}
 	}
 
-	public void Pop()
+	public void Pop(int i)
 	{
 		if (Number == 1)
 		{
 			if (Parent != null)
 			{
 				Parent.Child = null;
+				GameManager.Instance.bottomJellies[i] = null;
+			}
+			else
+			{
+				GameManager.Instance.bottomJellies[i] = Parent;
 			}
 		}
 		else
 		{	
-			Parent.Pop();
+			Parent.Pop(i);
 		}
 
 		ResourceManager.Instance.Destroy(gameObject);

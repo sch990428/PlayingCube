@@ -98,6 +98,7 @@ public class Jelly : MonoBehaviour
 						Parent = null;
 						transform.SetParent(hit.collider.transform, true);
 						gameObject.GetComponent<Collider>().enabled = true;
+						GameManager.Instance.GetBottomJellies();
 						return;
 					}
 					else
@@ -114,6 +115,7 @@ public class Jelly : MonoBehaviour
 							parentJelly.Child = this;
 							transform.SetParent(hit.collider.transform, true);
 							gameObject.GetComponent<Collider>().enabled = true;
+							GameManager.Instance.GetBottomJellies();
 							return;
 						}
 					}
@@ -123,8 +125,6 @@ public class Jelly : MonoBehaviour
 			gameObject.GetComponent<Collider>().enabled = true;
 			UpdatePos(prevPosition);
 		}
-
-		GameManager.Instance.UpdateLastJelly();
 	}
 
 	public bool IsHierarchy()

@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Rendering.LookDev;
@@ -15,18 +16,29 @@ public class GameManager : Singleton<GameManager>
 	public int Column = 7;
 	public float BottomCastOriginZ = -20f;
 
-	private Jelly[] bottomJellies;
+	private Dictionary<int, Jelly> bottomJellies;
 
 	protected override void Awake()
 	{
 		base.Awake();
-		bottomJellies = new Jelly[Column];
+		bottomJellies = new Dictionary<int, Jelly>();
+		for (int i = 0; i < Column; i++)
+		{
+			bottomJellies[i] = null;
+		}
+	}
+
+	private void Start()
+	{
 		AddJellyLine();
 		AddJellyLine();
+		Physics.SyncTransforms();
+		GetBottomJellies();
 	}
 
 	private void AddJellyLine()
 	{
+		Debug.Log("젤리 추가");
 		for (int i = 0; i < Column; i++)
 		{
 			Transform line = LineRoots.transform.GetChild(i);
@@ -57,10 +69,7 @@ public class GameManager : Singleton<GameManager>
 				newJelly.transform.SetParent(current.transform);
 				newJelly.transform.position = new Vector3(i - 3, 0, 7.5f - height);
 			}
-			
 		}
-
-		UpdateLastJelly();
 	}
 
 	private void Update()
@@ -68,29 +77,36 @@ public class GameManager : Singleton<GameManager>
 		if (Input.GetKeyDown(KeyCode.W))
 		{
 			AddJellyLine();
+			Physics.SyncTransforms();
+			GetBottomJellies();
 		}
 
 		if (Input.GetKeyDown(KeyCode.S))
 		{
-			foreach (Jelly jelly in bottomJellies)
+			foreach (KeyValuePair<int, Jelly> jelly in bottomJellies)
 			{
-				if (jelly != null)
+				if (jelly.Value != null)
 				{
-					Debug.Log(jelly.Number);
+					Debug.Log($"{jelly.Key} : {jelly.Value.Number}");
 				}
 			}
 		}
 	}
 
-	public void UpdateLastJelly()
+	public void GetBottomJellies()
 	{
+		Debug.Log("최하단 젤리 목록 갱신");
 		for (int i = 0; i < Column; i++)
 		{
 			RaycastHit hit;
 
-			Debug.DrawRay(new Vector3(i - 3, 0.1f, BottomCastOriginZ), Vector3.forward * Mathf.Infinity, Color.red, 4f);
-			if (Physics.Raycast(new Vector3(i - 3, 0.1f, BottomCastOriginZ), Vector3.forward, out hit, Mathf.Infinity))
+			int jellyLayerMask = LayerMask.GetMask("JellyEntity");
+
+			Vector3 origin = new Vector3(i - 3, 0, BottomCastOriginZ);
+			Debug.DrawRay(origin, Vector3.forward * 100f, Color.red, 1f);
+			if (Physics.Raycast(origin, Vector3.forward, out hit, 100f, jellyLayerMask))
 			{
+				Debug.Log(hit.collider.name);
 				if (hit.collider.name == "Jelly")
 				{
 					bottomJellies[i] = hit.collider.transform.GetComponent<Jelly>();
@@ -107,13 +123,13 @@ public class GameManager : Singleton<GameManager>
 
 	public void TryPop()
 	{
-		foreach (Jelly jelly in bottomJellies)
+		foreach (KeyValuePair<int, Jelly> jelly in bottomJellies)
 		{
-			if (jelly != null && jelly.Number == 5)
+			if (jelly.Value != null && jelly.Value.Number == 5)
 			{
-				if (jelly.IsHierarchyReverse())
+				if (jelly.Value.IsHierarchyReverse())
 				{
-					jelly.Pop();
+					jelly.Value.Pop();
 				}
 			}
 		}

@@ -98,7 +98,7 @@ public class Jelly : MonoBehaviour
 						Parent = null;
 						transform.SetParent(hit.collider.transform, true);
 						gameObject.GetComponent<Collider>().enabled = true;
-						GameManager.Instance.GetBottomJellies();
+						GameManager.Instance.OnJellyChanged();
 						return;
 					}
 					else
@@ -115,7 +115,7 @@ public class Jelly : MonoBehaviour
 							parentJelly.Child = this;
 							transform.SetParent(hit.collider.transform, true);
 							gameObject.GetComponent<Collider>().enabled = true;
-							GameManager.Instance.GetBottomJellies();
+							GameManager.Instance.OnJellyChanged();
 							return;
 						}
 					}
@@ -177,11 +177,6 @@ public class Jelly : MonoBehaviour
 			if (Parent != null)
 			{
 				Parent.Child = null;
-				GameManager.Instance.bottomJellies[i] = null;
-			}
-			else
-			{
-				GameManager.Instance.bottomJellies[i] = Parent;
 			}
 		}
 		else

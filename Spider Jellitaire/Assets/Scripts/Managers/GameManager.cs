@@ -84,7 +84,7 @@ public class GameManager : Singleton<GameManager>
 		{
 			AddJellyLine();
 			Physics.SyncTransforms();
-			GetBottomJellies();
+			OnJellyChanged();
 		}
 
 		if (Input.GetKeyDown(KeyCode.S))
@@ -97,6 +97,13 @@ public class GameManager : Singleton<GameManager>
 				}
 			}
 		}
+	}
+
+	public void OnJellyChanged()
+	{
+		Debug.Log("¡©∏Æ ≥ı¿”");
+		GetBottomJellies();
+		TryPop();
 	}
 
 	public void GetBottomJellies()
@@ -122,9 +129,11 @@ public class GameManager : Singleton<GameManager>
 					bottomJellies[i] = null;
 				}
 			}
+			else
+			{
+				bottomJellies[i] = null;
+			}
 		}
-
-		TryPop();
 	}
 
 	public void TryPop()
@@ -133,10 +142,12 @@ public class GameManager : Singleton<GameManager>
 		{
 			if (bottomJellies[i] != null && bottomJellies[i].Number == 5)
 			{
+				Debug.Log($"{i}¡Ÿ¿« πÿ¿Ã 5¥Ÿ!");
 				if (bottomJellies[i].IsHierarchyReverse())
 				{
-					Debug.Log("∆À");
+					Debug.Log($"{i}¡Ÿ¿Ã ∞Ë√˛¿˚¿Ã¥œ ∆À!");
 					bottomJellies[i].Pop(i);
+					bottomJellies[i] = null;
 					score++;
 					UI_Score.ScoreText.text = score.ToString();
 				}

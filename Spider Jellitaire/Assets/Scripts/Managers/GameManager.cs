@@ -41,7 +41,7 @@ public class GameManager : Singleton<GameManager>
 		GetBottomJellies();
 	}
 
-	private void AddJellyLine()
+	public void AddJellyLine()
 	{
 		Debug.Log("Á©¸® Ãß°¡");
 

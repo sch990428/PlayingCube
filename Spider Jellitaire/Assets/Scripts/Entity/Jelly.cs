@@ -5,6 +5,7 @@ public class Jelly : MonoBehaviour
 {
 	[SerializeField]
 	TMP_Text NumberText;
+	public GameManager gameManager;
 
 	public bool isMoving;
 
@@ -56,7 +57,7 @@ public class Jelly : MonoBehaviour
 		if (selectedJelly == this && IsHierarchy())
 		{
 			isMoving = true;
-			GameManager.Instance.anyJellyMoving = true;
+			gameManager.anyJellyMoving = true;
 			prevPosition = transform.position;
 		}
 	}
@@ -74,7 +75,7 @@ public class Jelly : MonoBehaviour
 		if (isMoving)
 		{
 			isMoving = false;
-			GameManager.Instance.anyJellyMoving = false;
+			gameManager.anyJellyMoving = false;
 
 			this.gameObject.GetComponent<Collider>().enabled = false;
 
@@ -96,7 +97,7 @@ public class Jelly : MonoBehaviour
 							Parent = null;
 							transform.SetParent(hit.collider.transform, true);
 							gameObject.GetComponent<Collider>().enabled = true;
-							GameManager.Instance.OnJellyChanged();
+							gameManager.OnJellyChanged();
 							return;
 						}
 					}
@@ -114,7 +115,7 @@ public class Jelly : MonoBehaviour
 							parentJelly.Child = this;
 							transform.SetParent(hit.collider.transform, true);
 							gameObject.GetComponent<Collider>().enabled = true;
-							GameManager.Instance.OnJellyChanged();
+							gameManager.OnJellyChanged();
 							return;
 						}
 					}

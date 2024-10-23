@@ -56,7 +56,10 @@ public class InputManager : Singleton<InputManager>
 		{
 			if (hit.collider.CompareTag("JellyEntity"))
 			{
-				OnTouchPressed.Invoke(hit.collider.gameObject.GetComponent<Jelly>());
+				if (OnTouchPressed != null)
+				{
+					OnTouchPressed.Invoke(hit.collider.gameObject.GetComponent<Jelly>());
+				}
 			}
 		}
 	}
@@ -66,7 +69,10 @@ public class InputManager : Singleton<InputManager>
 		Vector3 touchPos = Camera.main.ScreenToWorldPoint(touchPositionAction.ReadValue<Vector2>());
 		touchPos.y = 0;
 
-		OnTouchReleased.Invoke(touchPos);
+		if (OnTouchReleased != null)
+		{
+			OnTouchReleased.Invoke(touchPos);
+		}
 	}
 
 	private void Touching(InputAction.CallbackContext context)
@@ -80,7 +86,11 @@ public class InputManager : Singleton<InputManager>
 		if (plane.Raycast(ray, out float enter))
 		{
 			Vector3 hitPoint = ray.GetPoint(enter);
-			OnTouching.Invoke(hitPoint);
+
+			if (OnTouching != null)
+			{
+				OnTouching.Invoke(hitPoint);
+			}
 		}
 	}
 }

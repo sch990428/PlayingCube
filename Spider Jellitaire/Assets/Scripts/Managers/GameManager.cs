@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager : MonoBehaviour
 {
 	[SerializeField]
 	private GameObject LineRoots;
@@ -19,9 +21,8 @@ public class GameManager : Singleton<GameManager>
 
 	public IDifficulty difficulty;
 
-	protected override void Awake()
+	protected void Awake()
 	{
-		base.Awake();
 		bottomJellies = new Dictionary<int, Jelly>();
 		for (int i = 0; i < Column; i++)
 		{
@@ -33,7 +34,6 @@ public class GameManager : Singleton<GameManager>
 
 	private void Start()
 	{
-		Debug.Log(LobbyManager.Instance.difficulty);
 		difficulty = LobbyManager.Instance.difficulty;
 		AddJellyLine();
 		AddJellyLine();
@@ -55,6 +55,7 @@ public class GameManager : Singleton<GameManager>
 			}
 			GameObject newJelly = difficulty.CreateNewJelly();
 			Jelly j = newJelly.GetComponent<Jelly>();
+			j.gameManager = this;
 
 			if (line.childCount == 0)
 			{
@@ -155,5 +156,10 @@ public class GameManager : Singleton<GameManager>
 				}
 			}
 		}
+	}
+
+	public void Exit()
+	{
+		SceneManager.LoadScene("LobbyScene");
 	}
 }

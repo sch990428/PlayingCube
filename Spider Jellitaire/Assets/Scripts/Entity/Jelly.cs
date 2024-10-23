@@ -65,7 +65,7 @@ public class Jelly : MonoBehaviour
 	{
 		if (isMoving)
 		{
-			transform.position = pos;
+			transform.position = pos + new Vector3(0, 0.25f, 0);
 		}
 	}
 
@@ -86,21 +86,24 @@ public class Jelly : MonoBehaviour
 				{
 					if (hit.collider.name.Equals("LineRoot"))
 					{
-						UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -0.75f));
-						if (Parent != null)
+						if (hit.collider.transform.childCount == 0)
 						{
-							Parent.Child = null;
+							UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -0.75f));
+							if (Parent != null)
+							{
+								Parent.Child = null;
+							}
+							Parent = null;
+							transform.SetParent(hit.collider.transform, true);
+							gameObject.GetComponent<Collider>().enabled = true;
+							GameManager.Instance.OnJellyChanged();
+							return;
 						}
-						Parent = null;
-						transform.SetParent(hit.collider.transform, true);
-						gameObject.GetComponent<Collider>().enabled = true;
-						GameManager.Instance.OnJellyChanged();
-						return;
 					}
 					else
 					{
 						Jelly parentJelly = hit.collider.GetComponent<Jelly>();
-						if (parentJelly.Type == Type && parentJelly.Number == Number - 1 && parentJelly.Child == null)
+						if (parentJelly.Number == Number - 1 && parentJelly.Child == null)
 						{
 							UpdatePos(hit.collider.transform.position + new Vector3(0, 0, -1f));
 							if (Parent != null)
@@ -131,7 +134,7 @@ public class Jelly : MonoBehaviour
 		}
 		else
 		{
-			if (Child.Number == Number + 1)
+			if (Child.Number == Number + 1 && Child.Type == Type)
 			{
 				return Child.IsHierarchy();
 			}
@@ -155,7 +158,7 @@ public class Jelly : MonoBehaviour
 		}
 		else
 		{
-			if (Parent.Number == Number - 1)
+			if (Parent.Number == Number - 1 && Parent.Type == Type)
 			{
 				return Parent.IsHierarchyReverse();
 			}

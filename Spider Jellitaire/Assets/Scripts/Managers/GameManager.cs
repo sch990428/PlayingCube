@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,8 +36,6 @@ public class GameManager : MonoBehaviour
 		difficulty = LobbyManager.Instance.difficulty;
 		AddJellyLine();
 		AddJellyLine();
-		Physics.SyncTransforms();
-		GetBottomJellies();
 	}
 
 	public void AddJellyLine()
@@ -79,27 +76,9 @@ public class GameManager : MonoBehaviour
 				newJelly.transform.position = new Vector3(i - 3, 0, 7.5f - height);
 			}
 		}
-	}
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.W))
-		{
-			AddJellyLine();
-			Physics.SyncTransforms();
-			OnJellyChanged();
-		}
-
-		if (Input.GetKeyDown(KeyCode.S))
-		{
-			foreach (KeyValuePair<int, Jelly> jelly in bottomJellies)
-			{
-				if (jelly.Value != null)
-				{
-					Debug.Log($"{jelly.Key} : {jelly.Value.Number}");
-				}
-			}
-		}
+		Physics.SyncTransforms();
+		OnJellyChanged();
 	}
 
 	public void OnJellyChanged()

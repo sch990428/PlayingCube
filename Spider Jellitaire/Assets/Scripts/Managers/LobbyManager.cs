@@ -5,6 +5,7 @@ using UnityEngine;
 public class LobbyManager : Singleton<LobbyManager>
 {
 	public Dictionary<int, Data.GameMode> ModeDict;
+	public IDifficulty difficulty;
 
 	protected override void Awake()
 	{

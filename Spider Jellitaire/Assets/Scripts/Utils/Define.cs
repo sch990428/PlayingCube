@@ -15,17 +15,17 @@ public static class Define
 	{
 		JellyColor.Add(JellyType.Unknown, new Color32(46, 46, 46, 170));
 		JellyColor.Add(JellyType.Blue, new Color32(61, 102, 149, 170));
-		JellyColor.Add(JellyType.Green, new Color32(61, 149, 62, 170));
 		JellyColor.Add(JellyType.Red, new Color32(173, 69, 61, 170));
-		JellyColor.Add(JellyType.Yellow, new Color32(254, 255, 97, 170));
+		JellyColor.Add(JellyType.Green, new Color32(61, 149, 62, 170));
+		JellyColor.Add(JellyType.Yellow, new Color32(158, 159, 97, 170));
 	}
 
 	public enum JellyType
 	{
 		Unknown,
 		Blue,
-		Green,
 		Red,
+		Green,
 		Yellow
 	}
 }

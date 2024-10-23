@@ -1,0 +1,10 @@
+# ninja log v5
+105	2181	7512907948109651	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	fd46cee60713233
+141	2259	7512907949084975	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	f6926ef8d2839322
+1	2262	7512907949095073	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	775bdd460d00dbbd
+223	2292	7512907949387327	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	d4a8e0bedb895755
+176	2488	7512907951356621	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	4260b41b1ae4689d
+24	2575	7512907952220937	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	a95b7b4b7135459a
+74	2814	7512907954649239	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	5c9f8b14c2f1176d
+46	3056	7512907956704232	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	949c322f5aadc5d6
+3056	3491	7512907961302349	C:/Users/99042/Desktop/Project/Spider-Jellitaire/Spider Jellitaire/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/145y5m43/obj/arm64-v8a/libgame.so	58307240c864a318

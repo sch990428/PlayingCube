@@ -1,10 +1,5 @@
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -22,6 +17,8 @@ public class GameManager : Singleton<GameManager>
 
 	public Dictionary<int, Jelly> bottomJellies;
 
+	public IDifficulty difficulty;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -36,6 +33,8 @@ public class GameManager : Singleton<GameManager>
 
 	private void Start()
 	{
+		Debug.Log(LobbyManager.Instance.difficulty);
+		difficulty = LobbyManager.Instance.difficulty;
 		AddJellyLine();
 		AddJellyLine();
 		Physics.SyncTransforms();
@@ -45,14 +44,17 @@ public class GameManager : Singleton<GameManager>
 	private void AddJellyLine()
 	{
 		Debug.Log("Á©¸® Ãß°¡");
+
 		for (int i = 0; i < Column; i++)
 		{
 			Transform line = LineRoots.transform.GetChild(i);
 
-			GameObject newJelly = ResourceManager.Instance.Instantiate("Prefabs/GameEntity/Jelly");
+			if (difficulty == null)
+			{
+				difficulty = new HardStrategy();
+			}
+			GameObject newJelly = difficulty.CreateNewJelly();
 			Jelly j = newJelly.GetComponent<Jelly>();
-			j.Number = Random.Range(1, 6);
-			j.ChangeType(Define.JellyType.Green);
 
 			if (line.childCount == 0)
 			{

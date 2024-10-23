@@ -69,6 +69,20 @@ public class MenuSelector : Selector<GameObject>
 	public override void OnPointerClick(PointerEventData eventData)
 	{
 		if (isDragging) { return; }
+
+		switch (items.GetFront().Key)
+		{
+			case 1:
+				LobbyManager.Instance.difficulty = new EasyStrategy();
+				break;
+			case 2:
+				LobbyManager.Instance.difficulty = new NormalStrategy();
+				break;
+			case 3:
+				LobbyManager.Instance.difficulty = new HardStrategy();
+				break;
+		}
+
 		SceneManager.LoadScene("SpiderScene");
 	}
 }

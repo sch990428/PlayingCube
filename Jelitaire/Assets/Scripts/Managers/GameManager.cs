@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -16,12 +17,12 @@ public class GameManager : Singleton<GameManager>
 
 	private int lootCount = 5;
 
-	public GameState State = GameState.Exit;
-	public bool isGameStart = false;
+	public GameState State;
 
 	protected override void Awake()
     {
 		base.Awake();
+		State = GameState.Hide;
 		Application.targetFrameRate = 120; // 게임의 프레임을 선언
 	}
 
@@ -30,22 +31,28 @@ public class GameManager : Singleton<GameManager>
 		switch (State)
 		{
 			case GameState.Init:
-				StartCoroutine(Init());
+				StartCoroutine(InitBoard());
 				AddNewCubes();
 				State = GameState.Game;
 				break;
 
 			case GameState.Exit:
-				StartCoroutine(Clear());
+				StartCoroutine(ClearBoard());
 				State = GameState.Hide;
 				break;
+
 			case GameState.Game:
 
 				break;
 		}
 	}
 
-	private IEnumerator Init()
+	public void OnAddButtonClicked()
+	{
+		StartCoroutine(AddNewCubes());
+	}
+
+	private IEnumerator InitBoard()
 	{
 		// 게임 시작를 위한 애니메이션과 로직 실행
 		Board.SetActive(true);
@@ -54,9 +61,11 @@ public class GameManager : Singleton<GameManager>
 		yield return AddNewCubes();
 	}
 
-	private IEnumerator Clear()
+	private IEnumerator ClearBoard()
 	{
 		// 게임 종료를 위한 애니메이션과 로직 실행
+		yield return RemoveAllCubes();
+		yield return new WaitForSeconds(0.5f);
 		Board.transform.GetComponent<Animator>().SetTrigger("Exit");
 		yield return new WaitForSeconds(0.5f);
 		Board.SetActive(false);
@@ -70,6 +79,7 @@ public class GameManager : Singleton<GameManager>
 		for (int i = 0; i < lootCount; i++)
 		{
 			GameObject newCube = ResourceManager.Instance.Instantiate("Prefabs/Cube");
+			CubeController newCubeController = newCube.GetComponent<CubeController>();
 
 			// 1번과 3번 라인은 z가 1 낮음
 			float z = 50f;
@@ -81,18 +91,48 @@ public class GameManager : Singleton<GameManager>
 			// 새로 만든 큐브의 초기 위치를 지정
 			newCube.transform.position = new Vector3(i - 2, -5, z);
 
-			// 라인의 Root 위치에 자식 오브젝트가 이미 있으면 제일 막내로 넣어야함
+			// TODO : 새로 만든 큐브의 값들을 지정(타입, 숫자 등)
+			
+
+			// 라인의 Root 위치에 자식 오브젝트가 이미 있으면 제일 막내로 넣음
 			Transform lineRoot = Board.transform.GetChild(i);
 			if (lineRoot.childCount != 0)
 			{
-				// TODO : LinkedList와 유사하게 Child와 Parent 형태로 연결되어있는 Cube 객체를 순회
-				Debug.Log("Already has Child");
+				// LinkedList와 유사하게 Child와 Parent 형태로 연결되어있는 Cube 객체를 순회
+				CubeController current = lineRoot.GetChild(0).GetComponent<CubeController>(); // Root의 자식 큐브
+				while (current.Child != null)
+				{
+					current = current.Child;
+				}
+
+				// current가 계층 구조의 막내 큐브를 가리키면 여기에 Cube를 연결
+				newCube.transform.SetParent(current.transform);
+				current.Child = newCubeController;
+				newCubeController.Parent = current;
 			}
 			else
 			{
 				newCube.transform.SetParent(lineRoot);
 			}
-			
+		}
+	}
+
+	private IEnumerator RemoveAllCubes()
+	{
+		// TODO : 삭제 로직 개선
+		for (int i = 0; i < lootCount; i++)
+		{
+			Transform lineRoot = Board.transform.GetChild(i);
+			lineRoot.gameObject.GetComponent<Collider>().enabled = false;
+		}
+
+		yield return new WaitForSeconds(1f);
+
+		for (int i = 0; i < lootCount; i++)
+		{
+			Transform lineRoot = Board.transform.GetChild(i);
+			lineRoot.gameObject.GetComponent<Collider>().enabled = true;
+			ResourceManager.Instance.Destroy(lineRoot.GetChild(0).gameObject);
 		}
 	}
 }

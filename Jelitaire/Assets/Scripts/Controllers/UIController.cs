@@ -37,6 +37,8 @@ public class UIController : MonoBehaviour
 		yield return new WaitForSeconds(switchTerm);
 
 		StartCoroutine(FadeInUIGroup(GameUI));
+
+		GameManager.Instance.State = GameManager.GameState.Init;
 	}
 
 	private IEnumerator SwitchToLobbyUI()
@@ -49,6 +51,8 @@ public class UIController : MonoBehaviour
 		StartCoroutine(FadeInUIGroup(StaticLobbyUI));
 		StartCoroutine(FadeInUIGroup(ModeSelectUI));
 		StartCoroutine(SlideUpBackgrounds());
+
+		GameManager.Instance.State = GameManager.GameState.Exit;
 	}
 
 	private IEnumerator FadeOutUIGroup(Transform t)

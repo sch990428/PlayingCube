@@ -45,14 +45,12 @@ public class UIController : MonoBehaviour
 	{
 		// 게임 UI에서 로비 UI로 전환
 		StartCoroutine(FadeOutUIGroup(GameUI));
-
+		GameManager.Instance.State = GameManager.GameState.Exit;
 		yield return new WaitForSeconds(switchTerm);
 
 		StartCoroutine(FadeInUIGroup(StaticLobbyUI));
 		StartCoroutine(FadeInUIGroup(ModeSelectUI));
 		StartCoroutine(SlideUpBackgrounds());
-
-		GameManager.Instance.State = GameManager.GameState.Exit;
 	}
 
 	private IEnumerator FadeOutUIGroup(Transform t)

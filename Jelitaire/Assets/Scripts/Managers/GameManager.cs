@@ -65,9 +65,9 @@ public class GameManager : Singleton<GameManager>
 	{
 		// 게임 종료를 위한 애니메이션과 로직 실행
 		yield return RemoveAllCubes();
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.2f);
 		Board.transform.GetComponent<Animator>().SetTrigger("Exit");
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.4f);
 		Board.SetActive(false);
 	}
 
@@ -119,19 +119,10 @@ public class GameManager : Singleton<GameManager>
 
 	private IEnumerator RemoveAllCubes()
 	{
-		// TODO : 삭제 로직 개선
+		yield return null;
 		for (int i = 0; i < lootCount; i++)
 		{
 			Transform lineRoot = Board.transform.GetChild(i);
-			lineRoot.gameObject.GetComponent<Collider>().enabled = false;
-		}
-
-		yield return new WaitForSeconds(1f);
-
-		for (int i = 0; i < lootCount; i++)
-		{
-			Transform lineRoot = Board.transform.GetChild(i);
-			lineRoot.gameObject.GetComponent<Collider>().enabled = true;
 			ResourceManager.Instance.Destroy(lineRoot.GetChild(0).gameObject);
 		}
 	}

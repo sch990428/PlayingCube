@@ -66,6 +66,11 @@ public class InputManager : Singleton<InputManager>
 
 			if (OnTouching != null)
 			{
+				movingCube.GetComponent<Collider>().enabled = false;
+
+				hitPoint.x = Mathf.RoundToInt(hitPoint.x);
+				hitPoint.x = Mathf.Clamp(hitPoint.x, -2, 2);
+				
 				OnTouching.Invoke(hitPoint);
 			}
 		}
@@ -73,8 +78,9 @@ public class InputManager : Singleton<InputManager>
 
 	private void TouchReleased(InputAction.CallbackContext context)
 	{
-		if (OnTouchEnd != null)
+		if (OnTouchEnd != null && movingCube != null)
 		{
+			movingCube.GetComponent<Collider>().enabled = true;
 			OnTouchEnd.Invoke(movingCube);
 			movingCube = null;
 		}

@@ -39,6 +39,18 @@ public class CubeController : MonoBehaviour
 		render.material.color = GameManager.Instance.CubeColors[Type];
 	}
 
+	private void OnCollisionEnter(Collision collision)
+	{
+		Rigidbody rigidbody = GetComponent<Rigidbody>();
+
+		if (!rigidbody.isKinematic)
+		{
+			// 충돌이 감지되면 큐브의 속도를 감소시켜 반동을 상쇄
+			Vector3 newVelocity = rigidbody.linearVelocity * 0.15f;
+			rigidbody.linearVelocity = newVelocity;
+		}
+	}
+
 	public void DestroyCube()
 	{
 		if (Child != null)
@@ -63,16 +75,26 @@ public class CubeController : MonoBehaviour
 
 	private void Touching(Vector2 pos)
 	{
-		transform.position = new Vector3(pos.x, pos.y, transform.position.z);
+		float z;
+		if (pos.x == -1 || pos.x == 1)
+		{
+			z = 49f;
+		}
+		else
+		{
+			z = 50f;
+		}
+
+		transform.position = new Vector3(pos.x, pos.y, z);
+
 	}
 
 	private void TouchReleased(CubeController target)
 	{
 		if (target == this)
 		{
-			InputManager.Instance.OnTouching -= Touching;
 			transform.GetComponent<Rigidbody>().isKinematic = false;
-			InputManager.Instance.OnTouchEnd -= TouchReleased;
+			InputManager.Instance.OnTouching -= Touching;
 		}
 	}
 }

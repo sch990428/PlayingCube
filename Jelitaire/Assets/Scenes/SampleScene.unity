@@ -728,7 +728,7 @@ GameObject:
   - component: {fileID: 718762750}
   m_Layer: 0
   m_Name: Loot5
-  m_TagString: Ground
+  m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1616,7 +1616,7 @@ GameObject:
   - component: {fileID: 1176453867}
   m_Layer: 0
   m_Name: Loot1
-  m_TagString: Ground
+  m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1724,7 +1724,7 @@ GameObject:
   - component: {fileID: 1464765040}
   m_Layer: 0
   m_Name: Loot2
-  m_TagString: Ground
+  m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6861,7 +6861,7 @@ GameObject:
   - component: {fileID: 1684640820}
   m_Layer: 0
   m_Name: Loot3
-  m_TagString: Ground
+  m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7252,7 +7252,7 @@ GameObject:
   - component: {fileID: 1909633849}
   m_Layer: 0
   m_Name: Loot4
-  m_TagString: Ground
+  m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

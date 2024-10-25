@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class GameManager : Singleton<GameManager>
 	[SerializeField]
 	private GameObject Board;
 
+	[SerializeField]
+	public Color32[] CubeColors;
+
 	public enum GameState
 	{
 		Init,
@@ -15,13 +19,15 @@ public class GameManager : Singleton<GameManager>
 		Hide
 	}
 
-	private int lootCount = 5;
+	private int rootCount = 5;
+	private CubeController[] roots;
 
 	public GameState State;
 
 	protected override void Awake()
     {
 		base.Awake();
+		roots = new CubeController[rootCount];
 		State = GameState.Hide;
 		Application.targetFrameRate = 120; // 게임의 프레임을 선언
 	}
@@ -76,7 +82,7 @@ public class GameManager : Singleton<GameManager>
 		yield return new WaitForSeconds(0.5f);
 
 		// 각 라인에 새로운 큐브들을 추가
-		for (int i = 0; i < lootCount; i++)
+		for (int i = 0; i < rootCount; i++)
 		{
 			GameObject newCube = ResourceManager.Instance.Instantiate("Prefabs/Cube");
 			CubeController newCubeController = newCube.GetComponent<CubeController>();
@@ -92,38 +98,37 @@ public class GameManager : Singleton<GameManager>
 			newCube.transform.position = new Vector3(i - 2, -5, z);
 
 			// TODO : 새로 만든 큐브의 값들을 지정(타입, 숫자 등)
-			
+			newCubeController.SetValue(Random.Range(1, 6), Random.Range(0, 3));
 
 			// 라인의 Root 위치에 자식 오브젝트가 이미 있으면 제일 막내로 넣음
-			Transform lineRoot = Board.transform.GetChild(i);
-			if (lineRoot.childCount != 0)
+			if (roots[i] != null)
 			{
 				// LinkedList와 유사하게 Child와 Parent 형태로 연결되어있는 Cube 객체를 순회
-				CubeController current = lineRoot.GetChild(0).GetComponent<CubeController>(); // Root의 자식 큐브
+				CubeController current = roots[i].GetComponent<CubeController>(); // Root의 자식 큐브
 				while (current.Child != null)
 				{
 					current = current.Child;
 				}
 
 				// current가 계층 구조의 막내 큐브를 가리키면 여기에 Cube를 연결
-				newCube.transform.SetParent(current.transform);
 				current.Child = newCubeController;
 				newCubeController.Parent = current;
 			}
 			else
 			{
-				newCube.transform.SetParent(lineRoot);
+				roots[i] = newCubeController;
 			}
+
+			newCube.transform.SetParent(Board.transform);
 		}
 	}
 
 	private IEnumerator RemoveAllCubes()
 	{
 		yield return null;
-		for (int i = 0; i < lootCount; i++)
+		for (int i = 0; i < rootCount; i++)
 		{
-			Transform lineRoot = Board.transform.GetChild(i);
-			ResourceManager.Instance.Destroy(lineRoot.GetChild(0).gameObject);
+			roots[i].DestroyCube();
 		}
 	}
 }

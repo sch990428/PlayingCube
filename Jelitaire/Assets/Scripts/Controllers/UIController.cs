@@ -15,7 +15,7 @@ public class UIController : MonoBehaviour
 	[SerializeField]
 	private Transform GameUI;
 
-	private float switchTerm = 0.5f; // UI을 전환하는 간격
+	private float switchTerm = 1f; // UI을 전환하는 간격
 
 	public void OnPlayButtonClicked()
 	{

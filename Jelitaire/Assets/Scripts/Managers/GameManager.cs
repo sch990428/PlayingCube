@@ -1,7 +1,5 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -156,12 +154,32 @@ public class GameManager : Singleton<GameManager>
 			{
 				current = hit.collider.transform.GetComponent<CubeController>();
 
-				while (current != null)
+				if (!current.isMoving) // 이동중인 큐브는 감지되면 안됨
 				{
-					Cubes[i].Add(current);
-					current = current.Child;
+					while (current != null)
+					{
+						Cubes[i].Add(current);
+						current = current.Child;
+					}
 				}
 			}
 		}
+
+		//디버깅용 코드
+		//string str = "";
+		//foreach(CubeController c in Cubes[i]) { str += c.Number.ToString() + " "; }
+		//Debug.Log($"{i}번 루트 : {str}");
+	}
+
+	// 해당 Root의 맨 윗 큐브 반환
+	public CubeController GetTopCube(int i)
+	{
+		int count = Cubes[i].Count;
+		if (count > 0)
+		{
+			return Cubes[i][count - 1];
+		}
+
+		return null;
 	}
 }

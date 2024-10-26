@@ -22,7 +22,7 @@ public class CubeController : MonoBehaviour
 	public CubeController Child; // 하위의 큐브 혹은 null
 
 	// 큐브 이동 관련 정보
-	private bool isMoving; 
+	public bool isMoving; 
 	private Vector3 prevPos;
 
 	private void Awake()
@@ -77,6 +77,8 @@ public class CubeController : MonoBehaviour
 	{
 		if (target == this)
 		{
+			// TODO : 현재 뜯긴 큐브들의 숫자가 정렬되어있는가?
+
 			prevPos = transform.position; // 이전 좌표 저장
 
 			// 기존 부모와의 연결 끊기
@@ -86,7 +88,9 @@ public class CubeController : MonoBehaviour
 				Parent = null;
 			}
 
+			int targetX = Mathf.RoundToInt(transform.position.x);
 			isMoving = true;
+			GameManager.Instance.UpdateLine(targetX + 2); // 현재 큐브 배치 업데이트
 		}
 	}
 
@@ -125,42 +129,35 @@ public class CubeController : MonoBehaviour
 	{
 		if (isMoving)
 		{
-			// 레이캐스팅을 통해 현재 큐브의 바닥에 다른 큐브나 루트가 있는지 확인
-			RaycastHit hit;
 			isMoving = false;
 
 			int prevX = Mathf.RoundToInt(prevPos.x); // 이전 x좌표
 			int currentX = Mathf.RoundToInt(transform.position.x); // 현재 x좌표
 
-			Debug.DrawRay(transform.position, Vector3.down * 10f, Color.red, 4f);
-			if (Physics.Raycast(transform.position, Vector3.down, out hit))
-			{
-				if (hit.collider.CompareTag("Cube")) // 큐브면 
-				{
-					if (hit.collider.gameObject.name.Equals("Cube"))
-					{
-						UpdatePositionWithChild(hit.collider.transform.position + new Vector3(0, 0.75f, 0));
-						CubeController newParent = hit.collider.transform.GetComponent<CubeController>();
-						newParent.Child = this;
-						Parent = newParent;
-					}
-					else // 큐브가 아니면 (Root)
-					{				
-						UpdatePositionWithChild(new Vector3(transform.position.x, -12.625f ,transform.position.z));
-						Parent = null;
-					}
-					
-					// GameManager Cubes 갱신
-					GameManager.Instance.UpdateLine(prevX + 2);
-					GameManager.Instance.UpdateLine(currentX + 2);
+			// GameManager에서 탑 큐브를 찾아옴
+			CubeController topCube = GameManager.Instance.GetTopCube(currentX + 2);
 
-					return;
-				}
+			// TODO : 현재 붙이려는 큐브와 붙혀지는 큐브의 숫자가 정렬되어있는가?
+
+			if (topCube != null)
+			{
+				//Debug.Log($"큐브{topCube.Number}");
+				UpdatePositionWithChild(topCube.transform.position + new Vector3(0, 0.75f, 0));
+				topCube.Child = this;
+				Parent = topCube;
+			}
+			else
+			{
+				//Debug.Log("루트");
+				UpdatePositionWithChild(new Vector3(transform.position.x, -12.625f, transform.position.z));
+				Parent = null;
 			}
 
+			GameManager.Instance.UpdateLine(currentX + 2);
+
 			// 잘못된 위치에 둔 경우 다시 원위치
-			UpdatePositionWithChild(prevPos);
-			GameManager.Instance.UpdateLine(prevX + 2);
+			//UpdatePositionWithChild(prevPos);
+			//GameManager.Instance.UpdateLine(prevX + 2);
 		}
 	}
 }

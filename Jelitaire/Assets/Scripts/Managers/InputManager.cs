@@ -39,7 +39,7 @@ public class InputManager : Singleton<InputManager>
 		// 각 액션에 클릭 이벤트 함수 해제
 		touchPressAction.performed -= TouchPressed;
 		touchPressAction.performed -= TouchReleased;
-		touchingAction.performed += Touching;
+		touchingAction.performed -= Touching;
 	}
 
 	// 클릭 혹은 터치 최초 입력

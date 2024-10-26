@@ -78,10 +78,7 @@ public class InputManager : Singleton<InputManager>
 				if (OnTouching != null)
 				{
 					movingCube.GetComponent<Collider>().enabled = false; // 드래그 도중 큐브끼리 충돌방지 (필요한가?)
-
-					hitPoint.x = Mathf.RoundToInt(hitPoint.x); // 소수점 반올림을 통해 좌표 변경이 1단위로 이루어지도록 함
-					hitPoint.x = Mathf.Clamp(hitPoint.x, -2, 2); // [-2, 2] 범위에서 움직임
-
+					
 					OnTouching.Invoke(hitPoint); // 구독한 큐브 객체들에게 모두 Broadcasting (포인터 좌표 전달)
 				}
 			}

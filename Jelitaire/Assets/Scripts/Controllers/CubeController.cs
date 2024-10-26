@@ -99,6 +99,20 @@ public class CubeController : MonoBehaviour
 	{
 		if (isMoving)
 		{
+			pos.x = Mathf.RoundToInt(pos.x); // 소수점 반올림을 통해 좌표 변경이 1단위로 이루어지도록 함
+			pos.x = Mathf.Clamp(pos.x, -2, 2); // x 축은 [-2, 2] 범위에서 움직임
+
+			// y 축은 [현재 라인 최상단 큐브 혹은 Root 위, 2] 범위에서 움직임
+			CubeController topCube = GameManager.Instance.GetTopCube((int)(pos.x) + 2);
+
+			float yLimit = -12.675f;
+
+			if (topCube != null)
+			{
+				yLimit = topCube.transform.position.y + 0.75f;
+			}
+			pos.y = Mathf.Clamp(pos.y, yLimit, 2);
+
 			// x좌표 1씩 마다 지그재그로 z좌표가 변경
 			float z;
 			if (pos.x == -1 || pos.x == 1)

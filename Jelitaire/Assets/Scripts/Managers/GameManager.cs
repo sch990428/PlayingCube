@@ -26,6 +26,8 @@ public class GameManager : Singleton<GameManager>
 	private int rootCount = 5; // 큐브를 올릴 수 있는 라인(Root)의 개수
 	public List<CubeController>[] Cubes; // 모든 큐브의 정보를 담고있는 List의 배열
 
+	public bool isGenerating; // 큐브를 새로 만들고 있는 중인가?
+
 	protected override void Awake()
     {
 		base.Awake();
@@ -40,6 +42,8 @@ public class GameManager : Singleton<GameManager>
 		State = GameState.Hide;
 
 		Application.targetFrameRate = 120; // 게임의 프레임을 선언
+
+		isGenerating = false;
 	}
 
 	private void InitQueue()
@@ -101,7 +105,10 @@ public class GameManager : Singleton<GameManager>
 	// 큐브 새 줄 추가 버튼 이벤트
 	public void OnAddButtonClicked()
 	{
-		StartCoroutine(AddNewCubes());
+		if (!isGenerating)
+		{
+			StartCoroutine(AddNewCubes());
+		}
 	}
 
 	private IEnumerator InitBoard()
@@ -126,6 +133,7 @@ public class GameManager : Singleton<GameManager>
 	// 새 큐브 줄 추가 로직
 	private IEnumerator AddNewCubes()
 	{
+		isGenerating = true;
 		yield return new WaitForSeconds(0.5f);
 
 		if (CubeQueue.Count < 5)
@@ -168,6 +176,8 @@ public class GameManager : Singleton<GameManager>
 
 			UpdateLine(i);
 		}
+
+		isGenerating = false;
 	}
 
 	// 모든 큐브를 삭제

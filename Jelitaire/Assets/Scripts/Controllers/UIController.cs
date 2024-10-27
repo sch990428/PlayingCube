@@ -16,34 +16,43 @@ public class UIController : MonoBehaviour
 	private Transform GameUI;
 
 	private float switchTerm = 1f; // UI을 전환하는 간격
+	private bool isLoading = false; // UI를 전환하는 도중인가?
 
 	public void OnPlayButtonClicked()
 	{
-		StartCoroutine(SwitchToGameUI());
+		if (!isLoading)
+		{
+			StartCoroutine(SwitchToGameUI());
+		}
 	}
 
 	public void OnPauseButtonClicked()
 	{
-		StartCoroutine(SwitchToLobbyUI());
+		if (!GameManager.Instance.isGenerating && !isLoading)
+		{
+			StartCoroutine(SwitchToLobbyUI());
+		}
 	}
 
 	private IEnumerator SwitchToGameUI()
 	{
 		// 로비 UI에서 게임 UI로 전환
+		isLoading = true;
 		StartCoroutine(FadeOutUIGroup(StaticLobbyUI));
 		StartCoroutine(FadeOutUIGroup(ModeSelectUI));
 		StartCoroutine(SlideDownBackgrounds());
 
 		yield return new WaitForSeconds(switchTerm);
 
-		StartCoroutine(FadeInUIGroup(GameUI));
-
+		yield return FadeInUIGroup(GameUI);
 		GameManager.Instance.State = GameManager.GameState.Init;
+		isLoading = false;
 	}
 
 	private IEnumerator SwitchToLobbyUI()
 	{
 		// 게임 UI에서 로비 UI로 전환
+		isLoading = true;
 		StartCoroutine(FadeOutUIGroup(GameUI));
 		GameManager.Instance.State = GameManager.GameState.Exit;
 		yield return new WaitForSeconds(switchTerm);
@@ -51,6 +60,9 @@ public class UIController : MonoBehaviour
 		StartCoroutine(FadeInUIGroup(StaticLobbyUI));
 		StartCoroutine(FadeInUIGroup(ModeSelectUI));
 		StartCoroutine(SlideUpBackgrounds());
+
+		yield return SlideUpBackgrounds();
+		isLoading = false;
 	}
 
 	private IEnumerator FadeOutUIGroup(Transform t)

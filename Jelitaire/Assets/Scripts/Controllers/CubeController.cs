@@ -36,6 +36,7 @@ public class CubeController : MonoBehaviour
 	// 큐브 이동 관련 정보
 	public bool isMoving; 
 	private Vector3 prevPos;
+	private CubeController prevParent;
 
 	private void Awake()
 	{
@@ -99,7 +100,7 @@ public class CubeController : MonoBehaviour
 			}
 
 			prevPos = transform.position; // 이전 좌표 저장
-
+			prevParent = Parent; // 이전 부모 저장
 			// 기존 부모와의 연결 끊기
 			if (Parent != null)
 			{
@@ -167,7 +168,9 @@ public class CubeController : MonoBehaviour
 			Child.UpdatePositionWithChild(pos + new Vector3(0, 0.75f, 0)); // Child 재귀 (큐브의 높이인 0.75씩 올려서 함께 이동)
         }
 		transform.position = pos;
-    }
+
+		Physics.SyncTransforms(); // 물리엔진에 즉시 동기화
+	}
 
 	// 해당 큐브가 놓아질 때 수행할 동작
 	private void TouchReleased()
@@ -182,27 +185,39 @@ public class CubeController : MonoBehaviour
 			// GameManager에서 탑 큐브를 찾아옴
 			CubeController topCube = GameManager.Instance.GetTopCube(currentX + 2);
 
-			// TODO : 현재 붙이려는 큐브와 붙혀지는 큐브의 숫자가 정렬되어있는가?
-
 			if (topCube != null)
 			{
-				//Debug.Log($"큐브{topCube.Number}");
-				UpdatePositionWithChild(topCube.transform.position + new Vector3(0, 0.75f, 0));
-				topCube.Child = this;
-				Parent = topCube;
+				// 현재 붙이려는 큐브와 붙혀지는 부모 큐브의 숫자가 정렬되어있는가 ?
+				if (topCube.Number == Number + 1)
+				{
+					//Debug.Log($"큐브{topCube.Number}");
+					UpdatePositionWithChild(topCube.transform.position + new Vector3(0, 0.75f, 0));
+					topCube.Child = this;
+					Parent = topCube;
+					GameManager.Instance.UpdateLine(currentX + 2);
+					return;
+				}
 			}
 			else
 			{
 				//Debug.Log("루트");
 				UpdatePositionWithChild(new Vector3(transform.position.x, -12.625f, transform.position.z));
 				Parent = null;
+				GameManager.Instance.UpdateLine(currentX + 2);
+				return;
 			}
 
-			GameManager.Instance.UpdateLine(currentX + 2);
-
 			// 잘못된 위치에 둔 경우 다시 원위치
-			//UpdatePositionWithChild(prevPos);
-			//GameManager.Instance.UpdateLine(prevX + 2);
+			UpdatePositionWithChild(prevPos);
+
+			// 원래 부모가 없는 Root 였으면 제외
+			if (prevParent != null)
+			{
+				prevParent.Child = this;
+				Parent = prevParent;
+			}
+			Debug.Log(prevX + 2 + "번 루트 갱신");
+			GameManager.Instance.UpdateLine(prevX + 2);
 		}
 	}
 }

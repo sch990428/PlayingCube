@@ -196,8 +196,8 @@ public class GameManager : Singleton<GameManager>
 			if (hit.collider.CompareTag("Cube") && hit.collider.gameObject.name.Equals("Cube"))
 			{
 				current = hit.collider.transform.GetComponent<CubeController>();
-
-				if (!current.isMoving) // 이동중인 큐브는 감지되면 안됨
+				
+				if (!current.isMoving) // 이동중인 큐브는 레이캐스팅에 감지되면 안됨 (들어올리는 순간)
 				{
 					while (current != null)
 					{
@@ -210,7 +210,8 @@ public class GameManager : Singleton<GameManager>
 
 		//디버깅용 코드
 		//string str = "";
-		//foreach(CubeController c in Cubes[i]) { str += c.Number.ToString() + " "; }
+		//foreach (CubeController c in Cubes[i])
+		//{ str += c.Number.ToString() + " "; }
 		//Debug.Log($"{i}번 루트 : {str}");
 	}
 

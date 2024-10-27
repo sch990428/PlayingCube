@@ -79,8 +79,6 @@ public class InputManager : Singleton<InputManager>
 
 				if (OnTouching != null)
 				{
-					movingCube.GetComponent<Collider>().enabled = false; // 드래그 도중 큐브끼리 충돌방지 (필요한가?)
-					
 					OnTouching.Invoke(hitPoint); // 구독한 큐브 객체들에게 모두 Broadcasting (포인터 좌표 전달)
 				}
 			}
@@ -92,7 +90,6 @@ public class InputManager : Singleton<InputManager>
 	{
 		if (OnTouchEnd != null && movingCube != null)
 		{
-			movingCube.GetComponent<Collider>().enabled = true; // 콜라이더 되돌리기
 			OnTouchEnd.Invoke(); // 구독한 큐브 객체들에게 모두 Broadcasting (포인터 좌표 전달)
 			movingCube = null;
 		}

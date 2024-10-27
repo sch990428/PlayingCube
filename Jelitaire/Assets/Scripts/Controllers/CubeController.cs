@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class Cube
 {
@@ -93,7 +92,7 @@ public class CubeController : MonoBehaviour
 	// 해당 큐브가 선택되면 수행할 동작
 	private void TouchStart(CubeController target)
 	{
-		if (target == this)
+		if (target == this && !isDestroying)
 		{
 			// 현재 뜯길 큐브들의 숫자가 정렬되지않은 상태인가?
 			if (!IsSequential())
@@ -153,6 +152,8 @@ public class CubeController : MonoBehaviour
 			return;
 		}
 
+		isDestroying = true;
+
 		if (Number == 5) // 내 숫자가 5인 경우 
 		{
 			if (Parent != null) // 부모가 있을 때 부모와의 연결을 끊음
@@ -162,7 +163,6 @@ public class CubeController : MonoBehaviour
 		}
 		else
 		{
-			isDestroying = true;
 			Parent.Pop(); // Parent 재귀
 		}
 

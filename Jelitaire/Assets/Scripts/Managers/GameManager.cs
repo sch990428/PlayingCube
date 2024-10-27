@@ -51,7 +51,7 @@ public class GameManager : Singleton<GameManager>
 		// 가능한 모든 조합의 큐브를 2개씩 만들어 섞음
 		for (int i = 0; i < 2; i++)
 		{
-			for (int type = 0; type < 3; type++)
+			for (int type = 0; type < 1; type++)
 			{
 				for (int num = 1; num <= 5; num++)
 				{
@@ -201,18 +201,38 @@ public class GameManager : Singleton<GameManager>
 				{
 					while (current != null)
 					{
-						Cubes[i].Add(current);
-						current = current.Child;
+						if (!current.isDestroying) //삭제중인 큐브는 레이캐스팅에 감지되면 안됨
+						{
+							Cubes[i].Add(current);
+							current = current.Child;
+						}
 					}
 				}
 			}
 		}
 
+		// 업데이트 된 라인의 최상단이 1이라면 Pop을 시도
+		CubeController topCube = GetTopCube(i);
+		if (topCube != null && topCube.Number == 1)
+		{
+			TryPop(topCube, i);
+		}
+
 		//디버깅용 코드
-		//string str = "";
-		//foreach (CubeController c in Cubes[i])
-		//{ str += c.Number.ToString() + " "; }
-		//Debug.Log($"{i}번 루트 : {str}");
+		string str = "";
+		foreach (CubeController c in Cubes[i])
+		{ str += c.Number.ToString() + " "; }
+		Debug.Log($"{i}번 루트 : {str}");
+	}
+
+	public void TryPop(CubeController topCube, int i)
+	{
+		if (topCube.IsSequentialReverse())
+		{
+			int topCubeIndex = Cubes[i].Count;
+			Cubes[i].RemoveRange(topCubeIndex - 5, 5);
+			topCube.Pop();
+		}
 	}
 
 	// 해당 Root의 맨 윗 큐브 반환

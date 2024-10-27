@@ -35,6 +35,7 @@ public class CubeController : MonoBehaviour
 
 	// 큐브 이동 관련 정보
 	public bool isMoving; 
+	public bool isDestroying; 
 	private Vector3 prevPos;
 	private CubeController prevParent;
 
@@ -44,6 +45,7 @@ public class CubeController : MonoBehaviour
 		render = GetComponent<Renderer>();
 
 		isMoving = false;
+		isDestroying = false;
 	}
 
 	private void OnEnable()
@@ -75,7 +77,7 @@ public class CubeController : MonoBehaviour
 		render.material.color = GameManager.Instance.CubeColors[Type]; // 타입에 따른 색상 변경
 	}
 
-	// 큐브 삭제 로직
+	// 큐브 강제 삭제 로직
 	public void DestroyCube()
 	{
 		if (Child != null)
@@ -124,6 +126,48 @@ public class CubeController : MonoBehaviour
 
 		// 1씩 작은 순서로, 같은 타입끼리 정렬되어 있는가?
 		return ( Child.IsSequential() && (Child.Number == Number - 1) && (Child.Type == Type) );
+	}
+
+	// 부모 큐브들이 순차적으로 정렬되어 있는지 재귀 확인
+	public bool IsSequentialReverse()
+	{
+		if (Number == 5) // 현재 숫자가 5인 경우 true 반환
+		{
+			return true;
+		}
+
+		if (Parent == null) // 5가 아니었는데 부모가 없으면 순서가 끊긴 것으로 간주하고 false 반환
+		{
+			return false;
+		}
+
+		// 1씩 큰 순서로, 같은 타입끼리 정렬되어 있는가?
+		return (Parent.IsSequentialReverse() && (Parent.Number == Number + 1) && (Parent.Type == Type));
+	}
+
+	// 올바른 순서로 연결된 큐브를 자식부터 순차적으로 삭제하는 로직
+	public void Pop()
+	{
+		if (isDestroying)
+		{
+			return;
+		}
+
+		if (Number == 5) // 내 숫자가 5인 경우 
+		{
+			if (Parent != null) // 부모가 있을 때 부모와의 연결을 끊음
+			{
+				Parent.Child = null;
+			}
+		}
+		else
+		{
+			isDestroying = true;
+			Parent.Pop(); // Parent 재귀
+		}
+
+		animator.SetTrigger("Destroy");
+		ResourceManager.Instance.Destroy(gameObject, 0.35f);
 	}
 
 	// 해당 큐브가 선택되는 도중에 수행할 동작

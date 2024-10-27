@@ -148,6 +148,7 @@ public class GameManager : Singleton<GameManager>
 
 			// 새로 만든 큐브의 초기 위치를 지정
 			newCube.transform.position = new Vector3(i - 2, -12.625f + 0.75f * (Cubes[i].Count), z);
+			Physics.SyncTransforms(); // 물리엔진에 즉시 동기화
 
 			// TODO : 새로 만든 큐브의 값들을 지정(타입, 숫자 등)
 			Cube cube = CubeQueue.Dequeue();
@@ -164,6 +165,8 @@ public class GameManager : Singleton<GameManager>
 			Cubes[i].Add(newCubeController);
 
 			newCube.transform.SetParent(Board.transform);
+
+			UpdateLine(i);
 		}
 	}
 

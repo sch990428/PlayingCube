@@ -19,6 +19,8 @@ public class InputManager : Singleton<InputManager>
 
 	protected override void Awake()
     {
+		base.Awake();
+
 		// 액션 불러오기
 		playerInput = GetComponent<PlayerInput>();
 		touchPressAction = playerInput.actions["TouchPress"];

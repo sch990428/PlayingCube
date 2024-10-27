@@ -44,9 +44,12 @@ public class CubeController : MonoBehaviour
 	private void OnDisable()
 	{
 		// InputManager 구독 해제
-		InputManager.Instance.OnTouchStart -= TouchStart;
-		InputManager.Instance.OnTouching -= Touching;
-		InputManager.Instance.OnTouchEnd -= TouchReleased;
+		if (InputManager.hasInstance())
+		{
+			InputManager.Instance.OnTouchStart -= TouchStart;
+			InputManager.Instance.OnTouching -= Touching;
+			InputManager.Instance.OnTouchEnd -= TouchReleased;
+		}
 	}
 
 	// 큐브 생성 혹은 아이템 사용으로 인한 큐브 정보 변경

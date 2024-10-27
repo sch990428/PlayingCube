@@ -92,7 +92,11 @@ public class CubeController : MonoBehaviour
 	{
 		if (target == this)
 		{
-			// TODO : 현재 뜯긴 큐브들의 숫자가 정렬되어있는가?
+			// 현재 뜯길 큐브들의 숫자가 정렬되지않은 상태인가?
+			if (!IsSequential())
+			{
+				return;
+			}
 
 			prevPos = transform.position; // 이전 좌표 저장
 
@@ -107,6 +111,18 @@ public class CubeController : MonoBehaviour
 			isMoving = true;
 			GameManager.Instance.UpdateLine(targetX + 2); // 현재 큐브 배치 업데이트
 		}
+	}
+
+	// 자식 큐브들이 순차적으로 정렬되어 있는지 재귀 확인
+	private bool IsSequential()
+	{
+		if (Child == null)
+		{
+			return true;
+		}
+
+		// 1씩 작은 순서로, 같은 타입끼리 정렬되어 있는가?
+		return ( Child.IsSequential() && (Child.Number == Number - 1) && (Child.Type == Type) );
 	}
 
 	// 해당 큐브가 선택되는 도중에 수행할 동작

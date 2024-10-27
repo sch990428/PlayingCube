@@ -55,7 +55,7 @@ public class GameManager : Singleton<GameManager>
 		// 가능한 모든 조합의 큐브를 2개씩 만들어 섞음
 		for (int i = 0; i < 2; i++)
 		{
-			for (int type = 0; type < 1; type++)
+			for (int type = 0; type < 2; type++)
 			{
 				for (int num = 1; num <= 5; num++)
 				{
@@ -232,10 +232,10 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		//디버깅용 코드
-		string str = "";
-		foreach (CubeController c in Cubes[i])
-		{ str += c.Number.ToString() + " "; }
-		Debug.Log($"{i}번 루트 : {str}");
+		//string str = "";
+		//foreach (CubeController c in Cubes[i])
+		//{ str += c.Number.ToString() + " "; }
+		//Debug.Log($"{i}번 루트 : {str}");
 	}
 
 	public void TryPop(CubeController topCube, int i)

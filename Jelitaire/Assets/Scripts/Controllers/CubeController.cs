@@ -260,7 +260,7 @@ public class CubeController : MonoBehaviour
 				prevParent.Child = this;
 				Parent = prevParent;
 			}
-			Debug.Log(prevX + 2 + "번 루트 갱신");
+			//Debug.Log(prevX + 2 + "번 루트 갱신");
 			GameManager.Instance.UpdateLine(prevX + 2);
 		}
 	}

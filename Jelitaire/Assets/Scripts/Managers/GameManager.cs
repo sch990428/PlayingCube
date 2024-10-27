@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
 	[SerializeField]
 	public Color32[] CubeColors; // 큐브 타입에 따른 색상표
 
+	private Queue<Cube> CubeQueue;
+
 	// 게임 진행 State 패턴
 	public enum GameState 
 	{
@@ -40,11 +42,46 @@ public class GameManager : Singleton<GameManager>
 		Application.targetFrameRate = 120; // 게임의 프레임을 선언
 	}
 
+	private void InitQueue()
+	{
+		CubeQueue = new Queue<Cube>();
+
+		List<Cube> tempList = new List<Cube>();
+
+		// 가능한 모든 조합의 큐브를 2개씩 만들어 섞음
+		for (int i = 0; i < 2; i++)
+		{
+			for (int type = 0; type < 3; type++)
+			{
+				for (int num = 1; num <= 5; num++)
+				{
+					tempList.Add(new Cube(num, type));
+				}
+			}
+		}
+
+		// Fisher-Yates 알고리즘으로 큐브를 셔플
+		System.Random rng = new System.Random();
+
+		for (int n = tempList.Count - 1; n > 0; n--)
+		{
+			int k = rng.Next(n + 1);
+			(tempList[n], tempList[k]) = (tempList[k], tempList[n]);
+		}
+
+		// 대기열에 넣기
+		foreach (var cube in tempList)
+		{
+			CubeQueue.Enqueue(cube);
+		}
+	}
+
 	private void Update()
 	{
 		switch (State)
 		{
 			case GameState.Init:
+				InitQueue();
 				StartCoroutine(InitBoard());
 				AddNewCubes();
 				State = GameState.Game;
@@ -91,6 +128,11 @@ public class GameManager : Singleton<GameManager>
 	{
 		yield return new WaitForSeconds(0.5f);
 
+		if (CubeQueue.Count < 5)
+		{
+			InitQueue(); // 새로운 큐브 대기열 추가
+		}
+
 		// 각 라인에 새로운 큐브들을 추가
 		for (int i = 0; i < rootCount; i++)
 		{
@@ -108,7 +150,8 @@ public class GameManager : Singleton<GameManager>
 			newCube.transform.position = new Vector3(i - 2, -12.625f + 0.75f * (Cubes[i].Count), z);
 
 			// TODO : 새로 만든 큐브의 값들을 지정(타입, 숫자 등)
-			newCubeController.SetValue(Random.Range(1, 6), Random.Range(0, 3));
+			Cube cube = CubeQueue.Dequeue();
+			newCubeController.SetValue(cube.Number, cube.Type);
 
 			// 라인의 Root 위치에 자식 오브젝트가 이미 있으면 제일 막내로 넣음
 			int CubeCountInLine = Cubes[i].Count;

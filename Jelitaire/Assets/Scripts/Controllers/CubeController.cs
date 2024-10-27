@@ -5,6 +5,18 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
+public class Cube
+{
+	public int Number; // 숫자
+	public int Type; // 타입
+
+	public Cube(int number, int type)
+	{
+		Number = number;
+		Type = type;
+	}
+}
+
 public class CubeController : MonoBehaviour
 {
 	// 큐브 개체 정보

@@ -239,6 +239,13 @@ public class CubeController : MonoBehaviour
 					topCube.Child = this;
 					Parent = topCube;
 					GameManager.Instance.UpdateLine(currentX + 2);
+
+					// 이펙트 표시
+					GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect");
+					go.transform.position = transform.position + new Vector3(0, -0.375f, 0);
+					go.transform.SetParent(transform);
+					ResourceManager.Instance.Destroy(go, 0.2f);
+
 					return;
 				}
 			}

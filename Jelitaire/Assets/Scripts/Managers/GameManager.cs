@@ -103,9 +103,11 @@ public class GameManager : Singleton<GameManager>
 		isGenerating = true;
 		yield return new WaitForSeconds(0.5f);
 
-		if (GameDifficulty.CubeQueue.Count < 5)
+		if (GameDifficulty.CubeQueue.Count <= 0)
 		{
+			Debug.Log(GameDifficulty.CubeQueue.Count);
 			GameDifficulty.InitQueue(); // 새로운 큐브 대기열 추가
+			Debug.Log(GameDifficulty.CubeQueue.Count);
 		}
 
 		// 각 라인에 새로운 큐브들을 추가

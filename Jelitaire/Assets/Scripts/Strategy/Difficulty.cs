@@ -11,14 +11,9 @@ public class Difficulty : IDifficulty
 {
 	public Queue<Cube> CubeQueue;
 
-	public Difficulty()
-	{
-		CubeQueue = new Queue<Cube>();
-	}
-
 	public virtual void InitQueue()
 	{
-
+		CubeQueue = new Queue<Cube>();
 	}
 
 	public void Shuffle(List<Cube> list)
@@ -38,6 +33,7 @@ public class Easy : Difficulty
 {
 	public override void InitQueue()
 	{
+		base.InitQueue();
 		List<Cube> tempList = new List<Cube>();
 
 		for (int i = 0; i < 2; i++)
@@ -65,6 +61,7 @@ public class Normal : Difficulty
 {
 	public override void InitQueue()
 	{
+		base.InitQueue();
 		List<Cube> tempList = new List<Cube>();
 
 		for (int i = 0; i < 2; i++)
@@ -92,6 +89,7 @@ public class Hard : Difficulty
 {
 	public override void InitQueue()
 	{
+		base.InitQueue();
 		List<Cube> tempList = new List<Cube>();
 
 		for (int i = 0; i < 2; i++)

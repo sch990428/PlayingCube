@@ -98,9 +98,7 @@ public class CubeController : MonoBehaviour
 			Child.DestroyCube(); // Child 재귀
 		}
 
-		animator.SetTrigger("Destroy");
-
-		ResourceManager.Instance.Destroy(gameObject, 0.35f);
+		ResourceManager.Instance.Destroy(gameObject);
 	}
 
 	// 해당 큐브가 선택되면 수행할 동작

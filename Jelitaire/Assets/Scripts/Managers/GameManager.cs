@@ -96,9 +96,9 @@ public class GameManager : Singleton<GameManager>
 	private IEnumerator ClearBoard()
 	{
 		// 게임 종료를 위한 애니메이션과 로직 실행
-		yield return RemoveAllCubes();
-		yield return new WaitForSeconds(0.2f);
 		Board.transform.GetComponent<Animator>().SetTrigger("Exit");
+		yield return new WaitForSeconds(0.2f);
+		yield return RemoveAllCubes();
 		yield return new WaitForSeconds(0.4f);
 		Board.SetActive(false);
 	}

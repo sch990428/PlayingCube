@@ -1037,6 +1037,17 @@
                 },
                 {
                     "name": "",
+                    "id": "78cfb889-e959-4a94-b9a8-bdcdc53c45b1",
+                    "path": "<Mouse>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TouchPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "87f74df6-6675-4bcc-920a-c6e6b7b0e032",
                     "path": "<Touchscreen>/position",
                     "interactions": "",
@@ -1048,11 +1059,33 @@
                 },
                 {
                     "name": "",
+                    "id": "5aa1e08b-14c8-45a4-8b56-79826a7d184b",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TouchPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9019d97f-aa48-4ca6-8318-d228d7290771",
                     "path": "<Touchscreen>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Touch",
+                    "action": "Touching",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eb59d546-9328-47d4-be7e-1831808f3802",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Touching",
                     "isComposite": false,
                     "isPartOfComposite": false

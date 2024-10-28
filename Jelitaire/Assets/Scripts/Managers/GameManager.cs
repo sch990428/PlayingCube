@@ -10,8 +10,6 @@ public class GameManager : Singleton<GameManager>
 	[SerializeField]
 	public Color32[] CubeColors; // 큐브 타입에 따른 색상표
 
-	private Queue<Cube> CubeQueue;
-
 	// 게임 진행 State 패턴
 	public enum GameState 
 	{
@@ -22,6 +20,7 @@ public class GameManager : Singleton<GameManager>
 	}
 
 	public GameState State;
+	public Difficulty GameDifficulty;
 
 	private int rootCount = 5; // 큐브를 올릴 수 있는 라인(Root)의 개수
 	public List<CubeController>[] Cubes; // 모든 큐브의 정보를 담고있는 List의 배열
@@ -41,43 +40,11 @@ public class GameManager : Singleton<GameManager>
 
 		State = GameState.Hide;
 
+		GameDifficulty = new Normal();
+
 		Application.targetFrameRate = 120; // 게임의 프레임을 선언
 
 		isGenerating = false;
-	}
-
-	private void InitQueue()
-	{
-		CubeQueue = new Queue<Cube>();
-
-		List<Cube> tempList = new List<Cube>();
-
-		// 가능한 모든 조합의 큐브를 2개씩 만들어 섞음
-		for (int i = 0; i < 2; i++)
-		{
-			for (int type = 0; type < 2; type++)
-			{
-				for (int num = 1; num <= 5; num++)
-				{
-					tempList.Add(new Cube(num, type));
-				}
-			}
-		}
-
-		// Fisher-Yates 알고리즘으로 큐브를 셔플
-		System.Random rng = new System.Random();
-
-		for (int n = tempList.Count - 1; n > 0; n--)
-		{
-			int k = rng.Next(n + 1);
-			(tempList[n], tempList[k]) = (tempList[k], tempList[n]);
-		}
-
-		// 대기열에 넣기
-		foreach (var cube in tempList)
-		{
-			CubeQueue.Enqueue(cube);
-		}
 	}
 
 	private void Update()
@@ -85,7 +52,7 @@ public class GameManager : Singleton<GameManager>
 		switch (State)
 		{
 			case GameState.Init:
-				InitQueue();
+				GameDifficulty.InitQueue();
 				StartCoroutine(InitBoard());
 				AddNewCubes();
 				State = GameState.Game;
@@ -136,9 +103,9 @@ public class GameManager : Singleton<GameManager>
 		isGenerating = true;
 		yield return new WaitForSeconds(0.5f);
 
-		if (CubeQueue.Count < 5)
+		if (GameDifficulty.CubeQueue.Count < 5)
 		{
-			InitQueue(); // 새로운 큐브 대기열 추가
+			GameDifficulty.InitQueue(); // 새로운 큐브 대기열 추가
 		}
 
 		// 각 라인에 새로운 큐브들을 추가
@@ -159,7 +126,7 @@ public class GameManager : Singleton<GameManager>
 			Physics.SyncTransforms(); // 물리엔진에 즉시 동기화
 
 			// TODO : 새로 만든 큐브의 값들을 지정(타입, 숫자 등)
-			Cube cube = CubeQueue.Dequeue();
+			Cube cube = GameDifficulty.CubeQueue.Dequeue();
 			newCubeController.SetValue(cube.Number, cube.Type);
 
 			// 라인의 Root 위치에 자식 오브젝트가 이미 있으면 제일 막내로 넣음

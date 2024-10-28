@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,9 @@ public class GameManager : Singleton<GameManager>
 	public List<CubeController>[] Cubes; // 모든 큐브의 정보를 담고있는 List의 배열
 
 	public bool isGenerating; // 큐브를 새로 만들고 있는 중인가?
+
+	public int Score; // 게임 점수
+	public event Action OnScoreChanged;
 
 	protected override void Awake()
     {
@@ -81,6 +85,8 @@ public class GameManager : Singleton<GameManager>
 	private IEnumerator InitBoard()
 	{
 		// 게임 시작를 위한 애니메이션과 로직 실행
+		Score = 0;
+		OnScoreChanged.Invoke();
 		Board.SetActive(true);
 		Board.transform.GetComponent<Animator>().SetTrigger("Start");
 		yield return AddNewCubes();
@@ -229,6 +235,13 @@ public class GameManager : Singleton<GameManager>
 		{
 			int topCubeIndex = Cubes[i].Count;
 			Cubes[i].RemoveRange(topCubeIndex - 5, 5);
+
+			Score++;
+			if (OnScoreChanged != null)
+			{
+				OnScoreChanged.Invoke();
+			}
+			
 			topCube.Pop();
 		}
 	}

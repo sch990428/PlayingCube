@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
@@ -14,6 +15,9 @@ public class UIController : MonoBehaviour
 
 	[SerializeField]
 	private Transform GameUI;
+
+	[SerializeField]
+	private TMP_Text ScoreText;
 
 	private float switchTerm = 1f; // UI을 전환하는 간격
 	private bool isLoading = false; // UI를 전환하는 도중인가?
@@ -45,6 +49,8 @@ public class UIController : MonoBehaviour
 		yield return new WaitForSeconds(switchTerm);
 
 		yield return FadeInUIGroup(GameUI);
+		GameManager.Instance.OnScoreChanged -= ScoreUpdate;
+		GameManager.Instance.OnScoreChanged += ScoreUpdate;
 		GameManager.Instance.State = GameManager.GameState.Init;
 		isLoading = false;
 	}
@@ -103,5 +109,10 @@ public class UIController : MonoBehaviour
 		animator.SetTrigger("SlideUp");
 		yield return new WaitForSeconds(0.5f);	
 		animator.ResetTrigger("SlideUp");
+	}
+
+	private void ScoreUpdate()
+	{
+		ScoreText.text = GameManager.Instance.Score.ToString();
 	}
 }

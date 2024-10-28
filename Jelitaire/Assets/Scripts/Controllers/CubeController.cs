@@ -31,10 +31,11 @@ public class CubeController : MonoBehaviour
 	// 큐브 계층 정보
 	public CubeController Parent; // 상위의 큐브 혹은 null(루트)
 	public CubeController Child; // 하위의 큐브 혹은 null
+	public bool isOverweight = true; // 큐브가 과적된 상태인가?
 
 	// 큐브 이동 관련 정보
 	public bool isMoving; 
-	public bool isDestroying; 
+	public bool isDestroying;
 	private Vector3 prevPos;
 	private CubeController prevParent;
 
@@ -66,7 +67,20 @@ public class CubeController : MonoBehaviour
 		}
 	}
 
-	// 큐브 생성 혹은 아이템 사용으로 인한 큐브 정보 변경
+	private void Update()
+	{
+		if (isOverweight && !isMoving)
+		{
+			float t = Mathf.PingPong(Time.time * 1f, 0.75f);
+			render.material.color = Color.Lerp(GameManager.Instance.CubeColors[Type], Color.black, t);
+		}
+		else
+		{
+			render.material.color = GameManager.Instance.CubeColors[Type];
+		}
+	}
+
+// 큐브 생성 혹은 아이템 사용으로 인한 큐브 정보 변경
 	public void SetValue(int number, int type)
 	{
 		Number = number;

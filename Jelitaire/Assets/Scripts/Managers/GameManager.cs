@@ -200,6 +200,22 @@ public class GameManager : Singleton<GameManager>
 			TryPop(topCube, i);
 		}
 
+		// 만일 해당 라인에 쌓인 큐브가 8개면 과적 상태로 전환
+		if (Cubes[i].Count >= 8)
+		{
+			foreach (CubeController c in Cubes[i])
+			{
+				c.isOverweight = true;
+			}
+		}
+		else
+		{
+			foreach (CubeController c in Cubes[i])
+			{
+				c.isOverweight = false;
+			}
+		}
+
 		//디버깅용 코드
 		//string str = "";
 		//foreach (CubeController c in Cubes[i])

@@ -124,6 +124,7 @@ public class CubeController : MonoBehaviour
 			int targetX = Mathf.RoundToInt(transform.position.x);
 			isMoving = true;
 			GameManager.Instance.UpdateLine(targetX + 2); // 현재 큐브 배치 업데이트
+			SoundManager.Instance.PlaySound(SoundManager.GameSound.Click);
 		}
 	}
 
@@ -258,6 +259,7 @@ public class CubeController : MonoBehaviour
 					go.transform.SetParent(transform);
 					ResourceManager.Instance.Destroy(go, 0.2f);
 
+					SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
 					return;
 				}
 			}
@@ -267,6 +269,7 @@ public class CubeController : MonoBehaviour
 				UpdatePositionWithChild(new Vector3(transform.position.x, GameManager.Instance.rootY + 2.375f, transform.position.z));
 				Parent = null;
 				GameManager.Instance.UpdateLine(currentX + 2);
+				SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
 				return;
 			}
 

@@ -19,7 +19,7 @@ public class GameManager : Singleton<GameManager>
 	private GameObject GameOverUI; // 게임오버 창
 
 	// 게임 진행 State 패턴
-	public enum GameState 
+	public enum GameState
 	{
 		Init,
 		Game,
@@ -66,6 +66,7 @@ public class GameManager : Singleton<GameManager>
 		switch (State)
 		{
 			case GameState.Init:
+				SoundManager.Instance.PlaySound(SoundManager.GameSound.Init);
 				GameDifficulty.InitQueue();
 				StartCoroutine(InitBoard());
 				AddNewCubes();
@@ -118,6 +119,7 @@ public class GameManager : Singleton<GameManager>
 	private IEnumerator AddNewCubes()
 	{
 		isGenerating = true;
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.AddLine);
 		yield return new WaitForSeconds(0.5f);
 
 		if (GameDifficulty.CubeQueue.Count <= 0)
@@ -225,6 +227,7 @@ public class GameManager : Singleton<GameManager>
 		{
 			// 만일 해당 라인에 쌓인 큐브가 7개를 넘으면 게임오버 상태로 전환
 			State = GameState.GameOver;
+			SoundManager.Instance.PlaySound(SoundManager.GameSound.GameOver);
 		}
 		else if (Cubes[i].Count == 7)
 		{
@@ -289,7 +292,7 @@ public class GameManager : Singleton<GameManager>
 			{
 				OnScoreChanged.Invoke();
 			}
-			
+			SoundManager.Instance.PlaySound(SoundManager.GameSound.Pop);
 			topCube.Pop();
 		}
 	}

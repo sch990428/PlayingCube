@@ -31,6 +31,8 @@ public class GameManager : Singleton<GameManager>
 	public int Score; // 게임 점수
 	public event Action OnScoreChanged;
 
+	public float rootY;
+
 	protected override void Awake()
     {
 		base.Awake();
@@ -89,6 +91,8 @@ public class GameManager : Singleton<GameManager>
 		OnScoreChanged.Invoke();
 		Board.SetActive(true);
 		Board.transform.GetComponent<Animator>().SetTrigger("Start");
+		yield return new WaitForSeconds(0.5f);
+		rootY = Board.transform.GetChild(0).position.y;
 		yield return AddNewCubes();
 		yield return AddNewCubes();
 	}
@@ -119,6 +123,7 @@ public class GameManager : Singleton<GameManager>
 		// 각 라인에 새로운 큐브들을 추가
 		for (int i = 0; i < rootCount; i++)
 		{
+			yield return new WaitForSeconds(0.01f);
 			GameObject newCube = ResourceManager.Instance.Instantiate("Prefabs/Cube");
 			CubeController newCubeController = newCube.GetComponent<CubeController>();
 
@@ -129,8 +134,9 @@ public class GameManager : Singleton<GameManager>
 				z = 49f;
 			}
 
+			
 			// 새로 만든 큐브의 초기 위치를 지정
-			newCube.transform.position = new Vector3(i - 2, -12.625f + 0.75f * (Cubes[i].Count), z);
+			newCube.transform.position = new Vector3(i - 2, rootY + 2.375f + 0.75f * (Cubes[i].Count), z);
 			Physics.SyncTransforms(); // 물리엔진에 즉시 동기화
 
 			// TODO : 새로 만든 큐브의 값들을 지정(타입, 숫자 등)

@@ -193,7 +193,7 @@ public class CubeController : MonoBehaviour
 			// y 축은 [현재 라인 최상단 큐브 혹은 Root 위, 2] 범위에서 움직임
 			CubeController topCube = GameManager.Instance.GetTopCube((int)(pos.x) + 2);
 
-			float yLimit = -12.675f;
+			float yLimit = GameManager.Instance.rootY + 2.375f;
 
 			if (topCube != null)
 			{
@@ -264,7 +264,7 @@ public class CubeController : MonoBehaviour
 			else
 			{
 				//Debug.Log("루트");
-				UpdatePositionWithChild(new Vector3(transform.position.x, -12.625f, transform.position.z));
+				UpdatePositionWithChild(new Vector3(transform.position.x, GameManager.Instance.rootY + 2.375f, transform.position.z));
 				Parent = null;
 				GameManager.Instance.UpdateLine(currentX + 2);
 				return;

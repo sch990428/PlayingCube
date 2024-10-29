@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -11,13 +12,20 @@ public class GameManager : Singleton<GameManager>
 	[SerializeField]
 	public Color32[] CubeColors; // 큐브 타입에 따른 색상표
 
+	[SerializeField]
+	private UIController uiController; // UI컨트롤러
+
+	[SerializeField]
+	private GameObject GameOverUI; // 게임오버 창
+
 	// 게임 진행 State 패턴
 	public enum GameState 
 	{
 		Init,
 		Game,
 		Exit,
-		Hide
+		Hide,
+		GameOver,
 	}
 
 	public GameState State;
@@ -63,14 +71,13 @@ public class GameManager : Singleton<GameManager>
 				AddNewCubes();
 				State = GameState.Game;
 				break;
-
 			case GameState.Exit:
 				StartCoroutine(ClearBoard());
 				State = GameState.Hide;
 				break;
-
-			case GameState.Game:
-
+			case GameState.GameOver:
+				GameOverUI.SetActive(true);
+				StartCoroutine(GameOver());
 				break;
 		}
 	}
@@ -78,7 +85,7 @@ public class GameManager : Singleton<GameManager>
 	// 큐브 새 줄 추가 버튼 이벤트
 	public void OnAddButtonClicked()
 	{
-		if (!isGenerating)
+		if (!isGenerating && State == GameState.Game)
 		{
 			StartCoroutine(AddNewCubes());
 		}
@@ -133,7 +140,6 @@ public class GameManager : Singleton<GameManager>
 			{
 				z = 49f;
 			}
-
 			
 			// 새로 만든 큐브의 초기 위치를 지정
 			newCube.transform.position = new Vector3(i - 2, rootY + 2.375f + 0.75f * (Cubes[i].Count), z);
@@ -217,8 +223,8 @@ public class GameManager : Singleton<GameManager>
 
 		if (Cubes[i].Count > 7)
 		{
-			// 만일 해당 라인에 쌓인 큐브가 7개를 넘으면 게임오버
-			StartCoroutine(GameOver());
+			// 만일 해당 라인에 쌓인 큐브가 7개를 넘으면 게임오버 상태로 전환
+			State = GameState.GameOver;
 		}
 		else if (Cubes[i].Count == 7)
 		{
@@ -267,6 +273,8 @@ public class GameManager : Singleton<GameManager>
 		}
 		yield return new WaitForSeconds(0.5f);
 		yield return RemoveAllCubes(); // 모든 큐브 오브젝트 제거
+		yield return new WaitForSeconds(1f);
+		uiController.GameOverUI.onClick.AddListener(uiController.OnLobbyButtonClicked);
 	}
 
 	public void TryPop(CubeController topCube, int i)

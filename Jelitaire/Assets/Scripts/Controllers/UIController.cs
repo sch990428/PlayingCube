@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class UIController : MonoBehaviour
 
 	[SerializeField]
 	private Transform GameUI;
+
+	[SerializeField]
+	public Button GameOverUI;
 
 	[SerializeField]
 	private TMP_Text ScoreText;
@@ -36,11 +40,13 @@ public class UIController : MonoBehaviour
 		}
 	}
 
-	public void OnPauseButtonClicked()
+	public void OnLobbyButtonClicked()
 	{
 		if (!GameManager.Instance.isGenerating && !isLoading)
 		{
+			GameOverUI.gameObject.SetActive(false);
 			StartCoroutine(SwitchToLobbyUI());
+
 		}
 	}
 

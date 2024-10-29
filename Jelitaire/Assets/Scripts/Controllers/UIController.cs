@@ -21,15 +21,21 @@ public class UIController : MonoBehaviour
 	public Button GameOverUI;
 
 	[SerializeField]
+	private TMP_Text MoneyText;
+
+	[SerializeField]
 	private TMP_Text ScoreText;
 
 	private float switchTerm = 1f; // UI을 전환하는 간격
 	private bool isLoading = false; // UI를 전환하는 도중인가?
 
+	public int Money = 0;
+
 	private void Awake()
 	{
 		GameManager.Instance.OnScoreChanged -= ScoreUpdate;
 		GameManager.Instance.OnScoreChanged += ScoreUpdate;
+		MoneyText.text = Money.ToString();
 	}
 
 	public void OnPlayButtonClicked()
@@ -47,6 +53,8 @@ public class UIController : MonoBehaviour
 			GameOverUI.gameObject.SetActive(false);
 			StartCoroutine(SwitchToLobbyUI());
 
+			Money += GameManager.Instance.Score;
+			MoneyText.text = Money.ToString();
 		}
 	}
 

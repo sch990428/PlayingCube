@@ -123,7 +123,7 @@ public class GameManager : Singleton<GameManager>
 		// 각 라인에 새로운 큐브들을 추가
 		for (int i = 0; i < rootCount; i++)
 		{
-			yield return new WaitForSeconds(0.01f);
+			yield return new WaitForSeconds(0.03f);
 			GameObject newCube = ResourceManager.Instance.Instantiate("Prefabs/Cube");
 			CubeController newCubeController = newCube.GetComponent<CubeController>();
 
@@ -212,6 +212,7 @@ public class GameManager : Singleton<GameManager>
 			TryPop(topCube, i);
 		}
 
+		// 업데이트 된 라인에 쌓인 큐브의 갯수에 따라 위험도 결정
 		int count = Cubes[i].Count;
 
 		if (Cubes[i].Count > 7)
@@ -246,7 +247,7 @@ public class GameManager : Singleton<GameManager>
 	public IEnumerator GameOver()
 	{
 		// 순간적으로 RigidBody에 랜덤한 힘을 주어 큐브를 날려버림
-		yield return new WaitForSeconds(0.1f);
+		yield return new WaitForSeconds(0.2f);
 		for (int k = 0; k < rootCount; k++)
 		{
 			foreach (CubeController c in Cubes[k])

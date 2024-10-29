@@ -22,6 +22,12 @@ public class UIController : MonoBehaviour
 	private float switchTerm = 1f; // UI을 전환하는 간격
 	private bool isLoading = false; // UI를 전환하는 도중인가?
 
+	private void Awake()
+	{
+		GameManager.Instance.OnScoreChanged -= ScoreUpdate;
+		GameManager.Instance.OnScoreChanged += ScoreUpdate;
+	}
+
 	public void OnPlayButtonClicked()
 	{
 		if (!isLoading)
@@ -42,16 +48,15 @@ public class UIController : MonoBehaviour
 	{
 		// 로비 UI에서 게임 UI로 전환
 		isLoading = true;
+		
 		StartCoroutine(FadeOutUIGroup(StaticLobbyUI));
 		StartCoroutine(FadeOutUIGroup(ModeSelectUI));
 		StartCoroutine(SlideDownBackgrounds());
 
+		GameManager.Instance.State = GameManager.GameState.Init;
 		yield return new WaitForSeconds(switchTerm);
 
 		yield return FadeInUIGroup(GameUI);
-		GameManager.Instance.OnScoreChanged -= ScoreUpdate;
-		GameManager.Instance.OnScoreChanged += ScoreUpdate;
-		GameManager.Instance.State = GameManager.GameState.Init;
 		isLoading = false;
 	}
 

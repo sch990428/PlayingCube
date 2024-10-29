@@ -206,9 +206,16 @@ public class GameManager : Singleton<GameManager>
 			TryPop(topCube, i);
 		}
 
-		// 만일 해당 라인에 쌓인 큐브가 8개면 과적 상태로 전환
-		if (Cubes[i].Count >= 8)
+		int count = Cubes[i].Count;
+
+		if (Cubes[i].Count > 7)
 		{
+			// 만일 해당 라인에 쌓인 큐브가 7개를 넘으면 게임오버
+			StartCoroutine(GameOver());
+		}
+		else if (Cubes[i].Count == 7)
+		{
+			// 만일 해당 라인에 쌓인 큐브가 7개면 과적 상태로 전환
 			foreach (CubeController c in Cubes[i])
 			{
 				c.isOverweight = true;
@@ -216,6 +223,7 @@ public class GameManager : Singleton<GameManager>
 		}
 		else
 		{
+			// 평상시엔 과적 상태 해제
 			foreach (CubeController c in Cubes[i])
 			{
 				c.isOverweight = false;
@@ -227,6 +235,31 @@ public class GameManager : Singleton<GameManager>
 		//foreach (CubeController c in Cubes[i])
 		//{ str += c.Number.ToString() + " "; }
 		//Debug.Log($"{i}번 루트 : {str}");
+	}
+
+	public IEnumerator GameOver()
+	{
+		// 순간적으로 RigidBody에 랜덤한 힘을 주어 큐브를 날려버림
+		yield return new WaitForSeconds(0.1f);
+		for (int k = 0; k < rootCount; k++)
+		{
+			foreach (CubeController c in Cubes[k])
+			{
+				Rigidbody rigidbody = c.transform.GetComponent<Rigidbody>();
+				rigidbody.isKinematic = false;
+				rigidbody.useGravity = true;
+
+				Vector3 randomDirection = new Vector3(
+					UnityEngine.Random.Range(-1f, 1f),
+					UnityEngine.Random.Range(0f, 1f),
+					UnityEngine.Random.Range(-1f, 1f)
+				).normalized;
+
+				rigidbody.AddForce(randomDirection * 50f, ForceMode.Impulse);
+			}
+		}
+		yield return new WaitForSeconds(0.5f);
+		yield return RemoveAllCubes(); // 모든 큐브 오브젝트 제거
 	}
 
 	public void TryPop(CubeController topCube, int i)

@@ -104,7 +104,7 @@ public class CubeController : MonoBehaviour
 	// 해당 큐브가 선택되면 수행할 동작
 	private void TouchStart(CubeController target)
 	{
-		if (target == this && !isDestroying)
+		if (target == this && !isDestroying && !GameManager.Instance.isGenerating)
 		{
 			// 현재 뜯길 큐브들의 숫자가 정렬되지않은 상태인가?
 			if (!IsSequential())

@@ -29,7 +29,7 @@ public class Difficulty : IDifficulty
 	}
 }
 
-public class Easy : Difficulty
+public class StarfishEasy : Difficulty
 {
 	public override void InitQueue()
 	{
@@ -57,7 +57,7 @@ public class Easy : Difficulty
 	}
 }
 
-public class Normal : Difficulty
+public class StarfishNormal : Difficulty
 {
 	public override void InitQueue()
 	{
@@ -85,7 +85,7 @@ public class Normal : Difficulty
 	}
 }
 
-public class Hard : Difficulty
+public class StarfishHard : Difficulty
 {
 	public override void InitQueue()
 	{

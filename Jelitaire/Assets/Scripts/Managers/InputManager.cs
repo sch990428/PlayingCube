@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -87,6 +88,11 @@ public class InputManager : Singleton<InputManager>
 
 	// 클릭 혹은 터치 종료
 	private void TouchReleased(InputAction.CallbackContext context)
+	{
+		TouchCancel();
+	}
+
+	public void TouchCancel()
 	{
 		if (OnTouchEnd != null && movingCube != null)
 		{

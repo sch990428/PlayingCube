@@ -19,6 +19,9 @@ public class GameManager : Singleton<GameManager>
 	private ModeController modeController; // 모드 컨트롤러
 
 	[SerializeField]
+	private GameObject TimerUI; // 타이머 UI
+
+	[SerializeField]
 	private GameObject GameOverUI; // 게임오버 창
 
 	// 게임 진행 State 패턴
@@ -32,7 +35,7 @@ public class GameManager : Singleton<GameManager>
 	}
 
 	public GameState State;
-	public Difficulty GameDifficulty;
+	public Difficulty GameDifficulty; // 게임 난이도 전략 (생성로직)
 
 	private int rootCount = 5; // 큐브를 올릴 수 있는 라인(Root)의 개수
 	public List<CubeController>[] Cubes; // 모든 큐브의 정보를 담고있는 List의 배열
@@ -43,6 +46,11 @@ public class GameManager : Singleton<GameManager>
 	public event Action OnScoreChanged;
 
 	public float rootY;
+
+	// 타임어택 관련
+	public bool isTimeAttack; // 타임어택 모드인가?
+	public float timer; // 현재 타이머
+	public float timerInterval; // 타이머 만료 시간
 
 	protected override void Awake()
     {
@@ -68,11 +76,20 @@ public class GameManager : Singleton<GameManager>
 		switch (modeController.Selected)
 		{
 			case 1:
-				return new Easy();
+				isTimeAttack = false;
+				return new StarfishEasy();
 			case 2:
-				return new Normal();
+				isTimeAttack = false;
+				return new StarfishNormal();
 			case 3:
-				return new Hard();
+				isTimeAttack = false;
+				return new StarfishHard();
+			case 4:
+				isTimeAttack = true;
+				return new StarfishEasy();
+			case 5:
+				isTimeAttack = true;
+				return new StarfishNormal();
 			default:
 				return null;
 		}
@@ -98,6 +115,17 @@ public class GameManager : Singleton<GameManager>
 				GameOverUI.SetActive(true);
 				StartCoroutine(GameOver());
 				break;
+			case GameState.Game:
+				if (isTimeAttack) // 타임어택이면 타이머관련 로직 처리
+				{
+					timer += Time.deltaTime;
+
+					if (timer > timerInterval)
+					{
+						OnAddButtonClicked();
+					}
+				}
+				break;
 		}
 	}
 
@@ -106,6 +134,10 @@ public class GameManager : Singleton<GameManager>
 	{
 		if (!isGenerating && State == GameState.Game)
 		{
+			// 타이머 초기화
+			timer = 0f;
+			timerInterval = Mathf.Clamp(timerInterval - (Score / 5), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+			InputManager.Instance.TouchCancel();
 			StartCoroutine(AddNewCubes());
 		}
 	}
@@ -114,8 +146,11 @@ public class GameManager : Singleton<GameManager>
 	{
 		// 게임 시작를 위한 애니메이션과 로직 실행
 		Score = 0;
+		timer = 0f;
+		timerInterval = 20f;
 		OnScoreChanged.Invoke();
 		Board.SetActive(true);
+		TimerUI.SetActive(isTimeAttack);
 		Board.transform.GetComponent<Animator>().SetTrigger("Start");
 		yield return new WaitForSeconds(0.5f);
 		rootY = Board.transform.GetChild(0).position.y;

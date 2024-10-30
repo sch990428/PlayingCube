@@ -10,6 +10,9 @@ public class ModeController : MonoBehaviour
 	[SerializeField]
 	private TMP_Text ModeDescription;
 
+	[SerializeField]
+	private Transform ModeThumbnail;
+
 	private Dictionary<int, Data.GameMode> modeDict;
 
 	public int Selected;
@@ -42,5 +45,12 @@ public class ModeController : MonoBehaviour
 	{
 		ModeName.text = modeDict[index].ModeName;
 		ModeDescription.text = modeDict[index].ModeDescription;
+
+		if (ModeThumbnail.childCount > 0)
+		{
+			ResourceManager.Instance.Destroy(ModeThumbnail.GetChild(0).gameObject);
+		}
+		GameObject go = ResourceManager.Instance.Instantiate($"Prefabs/UI/{modeDict[index].ModeThumbnailPath}");
+		go.transform.SetParent(ModeThumbnail, false);
 	}
 }

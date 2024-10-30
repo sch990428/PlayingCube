@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
 	private UIController uiController; // UI컨트롤러
 
 	[SerializeField]
+	private ModeController modeController; // 모드 컨트롤러
+
+	[SerializeField]
 	private GameObject GameOverUI; // 게임오버 창
 
 	// 게임 진행 State 패턴
@@ -54,11 +57,25 @@ public class GameManager : Singleton<GameManager>
 
 		State = GameState.Hide;
 
-		GameDifficulty = new Normal();
-
 		Application.targetFrameRate = 120; // 게임의 프레임을 선언
 
 		isGenerating = false;
+	}
+
+	// ModeController의 선택값에 따라 난이도 전략 설정
+	private Difficulty SetGameDifficulty()
+	{
+		switch (modeController.Selected)
+		{
+			case 1:
+				return new Easy();
+			case 2:
+				return new Normal();
+			case 3:
+				return new Hard();
+			default:
+				return null;
+		}
 	}
 
 	private void Update()
@@ -67,6 +84,7 @@ public class GameManager : Singleton<GameManager>
 		{
 			case GameState.Init:
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Init);
+				GameDifficulty = SetGameDifficulty();
 				GameDifficulty.InitQueue();
 				StartCoroutine(InitBoard());
 				AddNewCubes();

@@ -12,29 +12,32 @@ public class ModeController : MonoBehaviour
 
 	private Dictionary<int, Data.GameMode> modeDict;
 
-	private int selected;
+	public int Selected;
 
 	private void Awake()
 	{
 		modeDict = DataManager.Instance.LoadJsonToDict<Data.GameMode>("Datas/gamemodes");
-		selected = 2;
-		UpdateModeInfo(selected);
+		Selected = 2;
+		UpdateModeInfo(Selected);
 	}
 
+	// 이전 버튼
 	public void OnPrevButtonClick()
 	{
-		selected--;
-		if (selected < 1) { selected = modeDict.Count; }
-		UpdateModeInfo(selected);
+		Selected--;
+		if (Selected < 1) { Selected = modeDict.Count; }
+		UpdateModeInfo(Selected);
 	}
 
+	// 다음 버튼
 	public void OnNextButtonClick()
 	{
-		selected++;
-		if (selected > modeDict.Count) { selected = 1; }
-		UpdateModeInfo(selected);
+		Selected++;
+		if (Selected > modeDict.Count) { Selected = 1; }
+		UpdateModeInfo(Selected);
 	}
 
+	// 모드 정보 업데이트시 호출
 	private void UpdateModeInfo(int index)
 	{
 		ModeName.text = modeDict[index].ModeName;

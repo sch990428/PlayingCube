@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,9 @@ public class UIController : MonoBehaviour
 
 	[SerializeField]
 	private Transform ModeSelectUI;
+
+	[SerializeField]
+	private Transform BottomMenuUI;
 
 	[SerializeField]
 	private Transform GameUI;
@@ -65,6 +69,7 @@ public class UIController : MonoBehaviour
 		
 		StartCoroutine(FadeOutUIGroup(StaticLobbyUI));
 		StartCoroutine(FadeOutUIGroup(ModeSelectUI));
+		StartCoroutine(FadeOutUIGroup(BottomMenuUI));
 		StartCoroutine(SlideDownBackgrounds());
 
 		GameManager.Instance.State = GameManager.GameState.Init;
@@ -84,6 +89,7 @@ public class UIController : MonoBehaviour
 
 		StartCoroutine(FadeInUIGroup(StaticLobbyUI));
 		StartCoroutine(FadeInUIGroup(ModeSelectUI));
+		StartCoroutine(FadeInUIGroup(BottomMenuUI));
 		StartCoroutine(SlideUpBackgrounds());
 
 		yield return SlideUpBackgrounds();
@@ -133,5 +139,15 @@ public class UIController : MonoBehaviour
 	private void ScoreUpdate()
 	{
 		ScoreText.text = GameManager.Instance.Score.ToString();
+	}
+
+	// 게임 종료
+	public void QuitGame()
+	{
+	#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+	#else
+        Application.Quit();
+	#endif
 	}
 }

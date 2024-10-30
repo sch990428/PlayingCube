@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,7 +19,7 @@ public class DataManager : Singleton<DataManager>
 	}
 
 	// Json 데이터를 딕셔너리로 불러온다
-	public Dictionary<int, T> LoadJsonToDict<T>(string path) where T : BaseDataEntity
+	public Dictionary<int, T> LoadJsonToDict<T>(string path) where T : Data.BaseDataEntity
 	{
 		List<T> list = LoadJsonToList<T>(path);
 		Dictionary<int, T> dict = new Dictionary<int, T>();

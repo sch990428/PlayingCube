@@ -255,9 +255,7 @@ public class CubeController : MonoBehaviour
 					topCube.Child = this;
 					Parent = topCube;
 					GameManager.Instance.UpdateLine(currentX + 2);
-
 					SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
-
 					DrawDropEffect();
 					return;
 				}
@@ -269,13 +267,13 @@ public class CubeController : MonoBehaviour
 				Parent = null;
 				GameManager.Instance.UpdateLine(currentX + 2);
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
-
 				DrawDropEffect();
 				return;
 			}
 
 			// 잘못된 위치에 둔 경우 다시 원위치
 			UpdatePositionWithChild(prevPos);
+			DrawDropEffect();
 
 			// 원래 부모가 없는 Root 였으면 제외
 			if (prevParent != null)
@@ -285,8 +283,6 @@ public class CubeController : MonoBehaviour
 			}
 			//Debug.Log(prevX + 2 + "번 루트 갱신");
 			GameManager.Instance.UpdateLine(prevX + 2);
-
-			DrawDropEffect();
 		}
 	}
 

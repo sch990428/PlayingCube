@@ -268,7 +268,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
   m_sharedMaterial: {fileID: 4853433281854970756, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 4853433281854970756, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -517,7 +518,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
   m_sharedMaterial: {fileID: 4853433281854970756, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 4853433281854970756, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -874,8 +876,6 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
-  - component: {fileID: 330585550}
-  - component: {fileID: 330585549}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1013,83 +1013,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e2a855cbbb62d41b814ab4150c0ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &330585549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: fc319be977de762469144eafbd3554b7, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 0
---- !u!114 &330585550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 330585546}
-  volumeLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  stopNaNPropagation: 1
-  finalBlitToCameraTarget: 0
-  antialiasingMode: 1
-  temporalAntialiasing:
-    jitterSpread: 0.75
-    sharpness: 0.25
-    stationaryBlending: 0.95
-    motionBlending: 0.85
-  subpixelMorphologicalAntialiasing:
-    quality: 2
-  fastApproximateAntialiasing:
-    fastMode: 1
-    keepAlpha: 0
-  fog:
-    enabled: 1
-    excludeSkybox: 1
-  debugLayer:
-    lightMeter:
-      width: 512
-      height: 256
-      showCurves: 1
-    histogram:
-      width: 512
-      height: 256
-      channel: 3
-    waveform:
-      exposure: 0.12
-      height: 256
-    vectorscope:
-      size: 256
-      exposure: 0.12
-    overlaySettings:
-      linearDepth: 0
-      motionColorIntensity: 4
-      motionGridSize: 64
-      colorBlindnessType: 0
-      colorBlindnessStrength: 1
-  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
-  breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
 --- !u!1 &373118700
 GameObject:
   m_ObjectHideFlags: 0
@@ -2309,7 +2232,7 @@ GameObject:
   - component: {fileID: 718762751}
   - component: {fileID: 718762750}
   m_Layer: 0
-  m_Name: Loot5
+  m_Name: Root5
   m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2512,7 +2435,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 10fc4df2da32a41aaa32d77bc913491c, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 1e02720660570774780ea3831259229e, type: 2}
 --- !u!4 &832575519
 Transform:
   m_ObjectHideFlags: 0
@@ -3178,7 +3101,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
   m_sharedMaterial: {fileID: 4853433281854970756, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 4853433281854970756, guid: c54df8788a5fd6b4b8784eef8fad7066, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -3339,7 +3263,7 @@ GameObject:
   - component: {fileID: 1176453868}
   - component: {fileID: 1176453867}
   m_Layer: 0
-  m_Name: Loot1
+  m_Name: Root1
   m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3703,7 +3627,7 @@ GameObject:
   - component: {fileID: 1464765041}
   - component: {fileID: 1464765040}
   m_Layer: 0
-  m_Name: Loot2
+  m_Name: Root2
   m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3845,11 +3769,11 @@ MonoBehaviour:
   Board: {fileID: 576859847}
   CubeColors:
   - serializedVersion: 2
-    rgba: 4288385518
+    rgba: 4285052383
   - serializedVersion: 2
-    rgba: 4289853430
+    rgba: 4285456301
   - serializedVersion: 2
-    rgba: 4289954179
+    rgba: 4294109177
   uiController: {fileID: 905674948}
   modeController: {fileID: 1815111011}
   TimerUI: {fileID: 148199022}
@@ -8840,7 +8764,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e67b699140583e4fa754e70a3cd38a1, type: 2}
   m_sharedMaterial: {fileID: 7215934454503391575, guid: 5e67b699140583e4fa754e70a3cd38a1, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 7215934454503391575, guid: 5e67b699140583e4fa754e70a3cd38a1, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -8928,7 +8853,7 @@ GameObject:
   - component: {fileID: 1684640821}
   - component: {fileID: 1684640820}
   m_Layer: 0
-  m_Name: Loot3
+  m_Name: Root3
   m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9253,7 +9178,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b5a27cfabcb0eb944a2365706c283056, type: 2}
   m_sharedMaterial: {fileID: 7215934454503391575, guid: b5a27cfabcb0eb944a2365706c283056, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 7215934454503391575, guid: b5a27cfabcb0eb944a2365706c283056, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -9341,7 +9267,7 @@ GameObject:
   - component: {fileID: 1909633850}
   - component: {fileID: 1909633849}
   m_Layer: 0
-  m_Name: Loot4
+  m_Name: Root4
   m_TagString: Cube
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

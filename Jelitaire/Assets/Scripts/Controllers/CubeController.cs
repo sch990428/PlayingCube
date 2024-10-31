@@ -33,7 +33,8 @@ public class CubeController : MonoBehaviour
 	// 큐브 계층 정보
 	public CubeController Parent; // 상위의 큐브 혹은 null(루트)
 	public CubeController Child; // 하위의 큐브 혹은 null
-	public bool isOverweight = true; // 큐브가 과적된 상태인가?
+	public bool isOverweight = false; // 큐브가 과적된 상태인가?
+	public int childCount = 0;
 
 	// 큐브 이동 관련 정보
 	public bool isMoving; 
@@ -71,7 +72,8 @@ public class CubeController : MonoBehaviour
 
 	private void Update()
 	{
-		if (isOverweight && !isMoving)
+		// 과적 상태에 따라 깜빡임 연출
+		if (isOverweight)
 		{
 			float t = Mathf.PingPong(Time.time * 1f, 0.75f);
 			render.material.color = Color.Lerp(GameManager.Instance.CubeColors[Type], Color.black, t);
@@ -122,6 +124,16 @@ public class CubeController : MonoBehaviour
 				Parent.Child = null;
 				Parent = null;
 			}
+
+			// 현재 들려있는 자식의 수 세기
+			childCount = 0;
+			CubeController current = this;
+			while (current.Child != null)
+			{
+				childCount++;
+				current = current.Child;
+			}
+			// Debug.Log($"들고있는 자식 {childCount + 1}");
 
 			int targetX = Mathf.RoundToInt(transform.position.x);
 			isMoving = true;
@@ -223,6 +235,24 @@ public class CubeController : MonoBehaviour
 	// 모든 Child와 함께 이동
 	private void UpdatePositionWithChild(Vector3 pos)
 	{
+		if (Parent == null) // 자신이 최하단 부모라면
+		{
+			// Debug.Log($"{GameManager.Instance.Cubes[(int)(pos.x) + 2].Count} + {childCount}");
+			// 들려있는 큐브의 수와 하단에 쌓인 큐브의 수가 합쳐졌을때 과적상태인가?
+			if (GameManager.Instance.Cubes[(int)(pos.x) + 2].Count + childCount + 1 > 7) 
+			{
+				isOverweight = true;
+			}
+			else
+			{
+				isOverweight = false;
+			}
+		}
+		else
+		{
+			isOverweight = Parent.isOverweight; // 들려있는 자식은 무조건 부모의 과적상태를 따름
+		}
+		
         if (Child != null)
         {
 			Child.UpdatePositionWithChild(pos + new Vector3(0, 0.75f, 0)); // Child 재귀 (큐브의 높이인 0.75씩 올려서 함께 이동)
@@ -238,6 +268,7 @@ public class CubeController : MonoBehaviour
 		if (isMoving)
 		{
 			isMoving = false;
+			childCount = 0;
 
 			int prevX = Mathf.RoundToInt(prevPos.x); // 이전 x좌표
 			int currentX = Mathf.RoundToInt(transform.position.x); // 현재 x좌표

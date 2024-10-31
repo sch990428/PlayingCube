@@ -21,8 +21,10 @@ public class CubeController : MonoBehaviour
 	// 큐브 개체 정보
 	[SerializeField]
 	private TMP_Text NumberText; // 숫자를 표시할 TextMeshPro 오브젝트
+	[SerializeField]
+	private GameObject PopEffect; // 터지는 파티클 이펙트
 
-    public int Number; // 숫자
+	public int Number; // 숫자
     public int Type; // 타입
 
 	private Animator animator;
@@ -179,6 +181,7 @@ public class CubeController : MonoBehaviour
 			Parent.Pop(); // Parent 재귀
 		}
 
+		DrawPopEffect();
 		animator.SetTrigger("Destroy");
 		ResourceManager.Instance.Destroy(gameObject, 0.35f);
 	}
@@ -253,13 +256,9 @@ public class CubeController : MonoBehaviour
 					Parent = topCube;
 					GameManager.Instance.UpdateLine(currentX + 2);
 
-					// 이펙트 표시
-					GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect");
-					go.transform.position = transform.position + new Vector3(0, -0.375f, 0);
-					go.transform.SetParent(transform);
-					ResourceManager.Instance.Destroy(go, 0.2f);
-
 					SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
+
+					DrawDropEffect();
 					return;
 				}
 			}
@@ -270,6 +269,8 @@ public class CubeController : MonoBehaviour
 				Parent = null;
 				GameManager.Instance.UpdateLine(currentX + 2);
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
+
+				DrawDropEffect();
 				return;
 			}
 
@@ -284,6 +285,39 @@ public class CubeController : MonoBehaviour
 			}
 			//Debug.Log(prevX + 2 + "번 루트 갱신");
 			GameManager.Instance.UpdateLine(prevX + 2);
+
+			DrawDropEffect();
 		}
+	}
+
+	private void DrawDropEffect()
+	{
+		// 드래그 드랍 이펙트 표시
+		GameObject go = ResourceManager.Instance.Instantiate("Prefabs/Effect");
+		go.transform.position = transform.position + new Vector3(0, -0.375f, 0);
+		go.transform.SetParent(transform);
+		ResourceManager.Instance.Destroy(go, 0.2f);
+	}
+
+	private void DrawPopEffect()
+	{
+		// 팝 이펙트 표시
+		GameObject go = Instantiate(PopEffect, transform.position, transform.rotation);
+		var particleSystem = go.GetComponent<ParticleSystem>();
+
+		Color32 defaultColor = GameManager.Instance.CubeColors[Type];
+
+		var mainModule = particleSystem.main;
+		mainModule.startColor = new ParticleSystem.MinMaxGradient(defaultColor);
+		var colorOverLifetime = particleSystem.colorOverLifetime;
+		Gradient gradient = new Gradient();
+		
+		gradient.SetKeys(
+			new GradientColorKey[] { new GradientColorKey(defaultColor, 0f), new GradientColorKey(defaultColor, 1.0f) },
+			new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0f, 1.0f) }
+			);
+		colorOverLifetime.color = new ParticleSystem.MinMaxGradient(gradient);
+
+		ResourceManager.Instance.Destroy(go, 1f);
 	}
 }

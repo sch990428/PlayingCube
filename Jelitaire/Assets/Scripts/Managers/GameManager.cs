@@ -1,6 +1,8 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +12,7 @@ public class GameManager : Singleton<GameManager>
 	private GameObject Board; // 큐브를 올릴 받침대 오브젝트 그룹 (Root 접근에 필요)
 
 	[SerializeField]
-	public Color32[] CubeColors; // 큐브 타입에 따른 색상표
+	public List<Color32> CubeColors; // 큐브 타입에 따른 색상표
 
 	[SerializeField]
 	private UIController uiController; // UI컨트롤러
@@ -70,6 +72,17 @@ public class GameManager : Singleton<GameManager>
 		isGenerating = false;
 	}
 
+	public void ShuffleColor()
+	{
+		System.Random rng = new System.Random();
+
+		for (int n = CubeColors.Count - 1; n > 0; n--)
+		{
+			int k = rng.Next(n + 1);
+			(CubeColors[n], CubeColors[k]) = (CubeColors[k], CubeColors[n]);
+		}
+	}
+
 	// ModeController의 선택값에 따라 난이도 전략 설정
 	private Difficulty SetGameDifficulty()
 	{
@@ -101,6 +114,7 @@ public class GameManager : Singleton<GameManager>
 		{
 			case GameState.Init:
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Init);
+				ShuffleColor();
 				GameDifficulty = SetGameDifficulty();
 				GameDifficulty.InitQueue();
 				StartCoroutine(InitBoard());

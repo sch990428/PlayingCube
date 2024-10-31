@@ -3774,6 +3774,14 @@ MonoBehaviour:
     rgba: 4285456301
   - serializedVersion: 2
     rgba: 4294109177
+  - serializedVersion: 2
+    rgba: 4293057457
+  - serializedVersion: 2
+    rgba: 4286940927
+  - serializedVersion: 2
+    rgba: 4290214819
+  - serializedVersion: 2
+    rgba: 4287720771
   uiController: {fileID: 905674948}
   modeController: {fileID: 1815111011}
   TimerUI: {fileID: 148199022}

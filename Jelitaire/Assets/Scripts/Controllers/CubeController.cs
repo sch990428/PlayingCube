@@ -187,6 +187,8 @@ public class CubeController : MonoBehaviour
 			{
 				Parent.Child = null;
 			}
+
+			Camera.main.GetComponent<CameraController>().OnShakeCamera(); // 마지막 큐브에서 흔들림 효과 부여
 		}
 		else
 		{

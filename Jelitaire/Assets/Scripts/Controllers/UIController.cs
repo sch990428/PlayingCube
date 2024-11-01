@@ -1,6 +1,8 @@
 using System.Collections;
+using System.IO;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,20 +35,24 @@ public class UIController : MonoBehaviour
 	private float switchTerm = 1f; // UI을 전환하는 간격
 	private bool isLoading = false; // UI를 전환하는 도중인가?
 
-	public int Money = 0;
+	public string UserDataPath;
+	public Data.UserData UserData;
 
 	private void Awake()
 	{
 		GameManager.Instance.OnScoreChanged -= ScoreUpdate;
 		GameManager.Instance.OnScoreChanged += ScoreUpdate;
 
-		if (!PlayerPrefs.HasKey("Voxel"))
+		UserDataPath = Path.Combine(Application.persistentDataPath, "UserData.json");
+		UserData = DataManager.Instance.LoadJsonToClass<Data.UserData>(UserDataPath);
+
+		if (UserData == null)
 		{
-			PlayerPrefs.SetInt("Voxel", 0);
+			UserData = new Data.UserData();
+			DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
 		}
 
-		Money = PlayerPrefs.GetInt("Voxel");
-		MoneyText.text = Money.ToString();
+		MoneyText.text = UserData.Money.ToString();
 	}
 
 	public void OnPlayButtonClicked()
@@ -66,10 +72,7 @@ public class UIController : MonoBehaviour
 
 			if (applyRecord)
 			{
-				Data.GameMode mode = ModeSelectUI.GetComponent<ModeController>().GetMode();
-				Money += GameManager.Instance.Score / mode.RewardRatio;
-				MoneyText.text = Money.ToString();
-				PlayerPrefs.SetInt("Voxel", Money);
+				SaveUserData();
 			}
 		}
 	}
@@ -153,9 +156,18 @@ public class UIController : MonoBehaviour
 		ScoreText.text = GameManager.Instance.Score.ToString();
 	}
 
+	public void SaveUserData()
+	{
+		Data.GameMode mode = ModeSelectUI.GetComponent<ModeController>().GetMode();
+		UserData.Money += GameManager.Instance.Score / mode.RewardRatio;
+		MoneyText.text = UserData.Money.ToString();
+		DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
+	}
+
 	// 게임 종료
 	public void QuitGame()
 	{
+		SaveUserData();
 	#if UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
 	#else

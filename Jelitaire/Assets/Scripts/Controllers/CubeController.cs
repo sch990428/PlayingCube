@@ -271,6 +271,7 @@ public class CubeController : MonoBehaviour
 		{
 			isMoving = false;
 			childCount = 0;
+			GameManager.Instance.AddScore(-1);
 
 			int prevX = Mathf.RoundToInt(prevPos.x); // 이전 x좌표
 			int currentX = Mathf.RoundToInt(transform.position.x); // 현재 x좌표
@@ -285,11 +286,11 @@ public class CubeController : MonoBehaviour
 				{
 					//Debug.Log($"큐브{topCube.Number}");
 					UpdatePositionWithChild(topCube.transform.position + new Vector3(0, 0.75f, 0));
+					DrawDropEffect();
 					topCube.Child = this;
 					Parent = topCube;
 					GameManager.Instance.UpdateLine(currentX + 2);
 					SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
-					DrawDropEffect();
 					return;
 				}
 			}
@@ -297,10 +298,10 @@ public class CubeController : MonoBehaviour
 			{
 				//Debug.Log("루트");
 				UpdatePositionWithChild(new Vector3(transform.position.x, GameManager.Instance.rootY + 2.375f, transform.position.z));
+				DrawDropEffect();
 				Parent = null;
 				GameManager.Instance.UpdateLine(currentX + 2);
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
-				DrawDropEffect();
 				return;
 			}
 

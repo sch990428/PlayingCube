@@ -354,11 +354,7 @@ public class GameManager : Singleton<GameManager>
 			int topCubeIndex = Cubes[i].Count;
 			Cubes[i].RemoveRange(topCubeIndex - 5, 5);
 
-			Score++;
-			if (OnScoreChanged != null)
-			{
-				OnScoreChanged.Invoke();
-			}
+			AddScore(10);
 			SoundManager.Instance.PlaySound(SoundManager.GameSound.Pop);
 			topCube.Pop();
 		}
@@ -374,5 +370,14 @@ public class GameManager : Singleton<GameManager>
 		}
 
 		return null;
+	}
+
+	public void AddScore(int amount)
+	{
+		Score = Mathf.Clamp(Score + amount, 0, int.MaxValue);
+		if (OnScoreChanged != null)
+		{
+			OnScoreChanged.Invoke();
+		}
 	}
 }

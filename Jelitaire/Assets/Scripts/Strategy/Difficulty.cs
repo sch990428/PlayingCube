@@ -64,7 +64,7 @@ public class StarfishNormal : Difficulty
 		base.InitQueue();
 		List<Cube> tempList = new List<Cube>();
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			for (int type = 0; type < 2; type++)
 			{
@@ -92,7 +92,7 @@ public class StarfishHard : Difficulty
 		base.InitQueue();
 		List<Cube> tempList = new List<Cube>();
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			for (int type = 0; type < 3; type++)
 			{

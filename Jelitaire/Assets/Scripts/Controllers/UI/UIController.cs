@@ -67,9 +67,6 @@ public class UIController : MonoBehaviour
 	{
 		if (!GameManager.Instance.isGenerating && !isLoading)
 		{
-			GameOverUI.gameObject.SetActive(false);
-			StartCoroutine(SwitchToLobbyUI());
-
 			if (applyRecord)
 			{
 				int modeId = ModeSelectUI.GetComponent<ModeController>().GetMode().ID;
@@ -78,7 +75,24 @@ public class UIController : MonoBehaviour
 					UserData.HighScores[modeId] = GameManager.Instance.Score;
 				}
 
+				Data.GameMode mode = ModeSelectUI.GetComponent<ModeController>().GetMode();
+				UserData.Money += GameManager.Instance.Score / mode.RewardRatio;
+				MoneyText.text = UserData.Money.ToString();
+
 				SaveUserData();
+				GameOverUI.gameObject.SetActive(false);
+				StartCoroutine(SwitchToLobbyUI());
+			}
+			else
+			{
+				ConfirmMessageController msg = ResourceManager.Instance.Instantiate("Prefabs/UI/ConfirmMessage", transform).GetComponent<ConfirmMessageController>();
+				msg.Init("진행중인 게임은 저장되지 않습니다", () =>
+				{
+					Time.timeScale = 1.0f;
+					GameOverUI.gameObject.SetActive(false);
+					StartCoroutine(SwitchToLobbyUI());
+					ResourceManager.Instance.Destroy(msg.gameObject);
+				});
 			}
 		}
 	}
@@ -164,9 +178,6 @@ public class UIController : MonoBehaviour
 
 	public void SaveUserData()
 	{
-		Data.GameMode mode = ModeSelectUI.GetComponent<ModeController>().GetMode();
-		UserData.Money += GameManager.Instance.Score / mode.RewardRatio;
-		MoneyText.text = UserData.Money.ToString();
 		DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
 	}
 

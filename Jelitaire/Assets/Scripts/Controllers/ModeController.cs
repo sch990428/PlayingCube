@@ -53,4 +53,9 @@ public class ModeController : MonoBehaviour
 		GameObject go = ResourceManager.Instance.Instantiate($"Prefabs/UI/{modeDict[index].ModeThumbnailPath}");
 		go.transform.SetParent(ModeThumbnail, false);
 	}
+
+	public Data.GameMode GetMode()
+	{
+		return modeDict[Selected];
+	}
 }

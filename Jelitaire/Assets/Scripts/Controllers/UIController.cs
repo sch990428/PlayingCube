@@ -66,7 +66,8 @@ public class UIController : MonoBehaviour
 
 			if (applyRecord)
 			{
-				Money += GameManager.Instance.Score;
+				Data.GameMode mode = ModeSelectUI.GetComponent<ModeController>().GetMode();
+				Money += GameManager.Instance.Score / mode.RewardRatio;
 				MoneyText.text = Money.ToString();
 				PlayerPrefs.SetInt("Voxel", Money);
 			}

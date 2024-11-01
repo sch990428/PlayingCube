@@ -72,6 +72,12 @@ public class UIController : MonoBehaviour
 
 			if (applyRecord)
 			{
+				int modeId = ModeSelectUI.GetComponent<ModeController>().GetMode().ID;
+				if (GameManager.Instance.Score > UserData.HighScores[modeId])
+				{
+					UserData.HighScores[modeId] = GameManager.Instance.Score;
+				}
+
 				SaveUserData();
 			}
 		}

@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class OptionController : Singleton<OptionController>
 {
+	[SerializeField]
+	Transform UICanvas;
+
 	Animator animator;
 
 	public bool SoundOff;
@@ -36,14 +39,19 @@ public class OptionController : Singleton<OptionController>
 	// 데이터 삭제 로직
 	public void Reset()
 	{
-		Data.UserData UserData = new Data.UserData();
-		string UserDataPath = Path.Combine(Application.persistentDataPath, "UserData.json");
-		DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
+		ConfirmMessageController msg = ResourceManager.Instance.Instantiate("Prefabs/UI/ConfirmMessage", UICanvas).GetComponent<ConfirmMessageController>();
+		msg.Init("모든 데이터가 사라집니다");
+		msg.Accept.onClick.AddListener(() =>
+		{
+			Data.UserData UserData = new Data.UserData();
+			string UserDataPath = Path.Combine(Application.persistentDataPath, "UserData.json");
+			DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
 
 #if UNITY_EDITOR
-		UnityEditor.EditorApplication.isPlaying = false;
+			UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();
 #endif
+		});
 	}
 }

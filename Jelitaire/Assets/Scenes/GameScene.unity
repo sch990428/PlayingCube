@@ -3635,7 +3635,7 @@ GameObject:
   - component: {fileID: 1143798245}
   - component: {fileID: 1143798247}
   - component: {fileID: 1143798246}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Gradient
   m_TagString: Untagged
   m_Icon: {fileID: 0}

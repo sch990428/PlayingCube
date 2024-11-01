@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,13 +27,16 @@ public class GameManager : Singleton<GameManager>
 	[SerializeField]
 	private GameObject GameOverUI; // 게임오버 창
 
+	[SerializeField]
+	private TMP_Text RewardText; // 보상값 텍스트
+
 	// 게임 진행 State 패턴
 	public enum GameState
 	{
 		Init,
 		Game,
 		Exit,
-		Hide,
+		Wait,
 		GameOver,
 	}
 
@@ -65,7 +69,7 @@ public class GameManager : Singleton<GameManager>
 			Cubes[i] = new List<CubeController>();
 		}
 
-		State = GameState.Hide;
+		State = GameState.Wait;
 
 		Application.targetFrameRate = 120; // 게임의 프레임을 선언
 
@@ -123,11 +127,13 @@ public class GameManager : Singleton<GameManager>
 				break;
 			case GameState.Exit:
 				StartCoroutine(ClearBoard());
-				State = GameState.Hide;
+				State = GameState.Wait;
 				break;
 			case GameState.GameOver:
 				GameOverUI.SetActive(true);
+				RewardText.text = (Score / modeController.GetMode().RewardRatio).ToString();
 				StartCoroutine(GameOver());
+				State = GameState.Wait;
 				break;
 			case GameState.Game:
 				if (isTimeAttack) // 타임어택이면 타이머관련 로직 처리
@@ -191,9 +197,9 @@ public class GameManager : Singleton<GameManager>
 
 		if (GameDifficulty.CubeQueue.Count <= 0)
 		{
-			Debug.Log(GameDifficulty.CubeQueue.Count);
+			// Debug.Log(GameDifficulty.CubeQueue.Count);
 			GameDifficulty.InitQueue(); // 새로운 큐브 대기열 추가
-			Debug.Log(GameDifficulty.CubeQueue.Count);
+			// Debug.Log(GameDifficulty.CubeQueue.Count);
 		}
 
 		// 각 라인에 새로운 큐브들을 추가

@@ -10,6 +10,11 @@ public class ConfirmMessageController : MonoBehaviour
     public Button Accept;
 	public Button Deny;
 
+	private void Awake()
+	{
+        Time.timeScale = 0f;
+	}
+
 	public void Init(string msg)
     {
         Message.text = msg;
@@ -17,6 +22,7 @@ public class ConfirmMessageController : MonoBehaviour
     
     public void Close()
     {
-        ResourceManager.Instance.Destroy(gameObject);
+		Time.timeScale = 1f;
+		ResourceManager.Instance.Destroy(gameObject);
     }
 }

@@ -4306,7 +4306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1383736471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4455,6 +4455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab495b6f086b0c4695f368db997cadc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UICanvas: {fileID: 905674947}
   SoundOff: 0
   SreenShakeOff: 0
 --- !u!225 &1383736477
@@ -10688,6 +10689,6 @@ SceneRoots:
   - {fileID: 952629267}
   - {fileID: 1474351607}
   - {fileID: 767643913}
+  - {fileID: 613089605}
   - {fileID: 905674947}
   - {fileID: 576859848}
-  - {fileID: 613089605}

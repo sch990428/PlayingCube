@@ -32,4 +32,18 @@ public class OptionController : Singleton<OptionController>
 		yield return new WaitForSeconds(0.3f);
 		gameObject.SetActive(false);
 	}
+
+	// 데이터 삭제 로직
+	public void Reset()
+	{
+		Data.UserData UserData = new Data.UserData();
+		string UserDataPath = Path.Combine(Application.persistentDataPath, "UserData.json");
+		DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
+
+#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+	}
 }

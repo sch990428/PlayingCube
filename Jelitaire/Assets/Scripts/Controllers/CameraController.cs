@@ -43,7 +43,7 @@ public class CameraController : MonoBehaviour
 	// 위치기반
 	private IEnumerator ShakeByPosition()
 	{
-		Debug.Log("흔들림");
+		// Debug.Log("흔들림");
 		while (shakeTime > 0f)
 		{
 			float z = Random.Range(-1f, 1f);

@@ -344,7 +344,7 @@ public class GameManager : Singleton<GameManager>
 		yield return new WaitForSeconds(0.5f);
 		yield return RemoveAllCubes(); // 모든 큐브 오브젝트 제거
 		yield return new WaitForSeconds(1f);
-		uiController.GameOverUI.onClick.AddListener(uiController.OnLobbyButtonClicked);
+		uiController.GameOverUI.onClick.AddListener(() => uiController.OnLobbyButtonClicked(true));
 	}
 
 	public void TryPop(CubeController topCube, int i)

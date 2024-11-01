@@ -39,6 +39,13 @@ public class UIController : MonoBehaviour
 	{
 		GameManager.Instance.OnScoreChanged -= ScoreUpdate;
 		GameManager.Instance.OnScoreChanged += ScoreUpdate;
+
+		if (!PlayerPrefs.HasKey("Voxel"))
+		{
+			PlayerPrefs.SetInt("Voxel", 0);
+		}
+
+		Money = PlayerPrefs.GetInt("Voxel");
 		MoneyText.text = Money.ToString();
 	}
 
@@ -50,15 +57,19 @@ public class UIController : MonoBehaviour
 		}
 	}
 
-	public void OnLobbyButtonClicked()
+	public void OnLobbyButtonClicked(bool applyRecord)
 	{
 		if (!GameManager.Instance.isGenerating && !isLoading)
 		{
 			GameOverUI.gameObject.SetActive(false);
 			StartCoroutine(SwitchToLobbyUI());
 
-			Money += GameManager.Instance.Score;
-			MoneyText.text = Money.ToString();
+			if (applyRecord)
+			{
+				Money += GameManager.Instance.Score;
+				MoneyText.text = Money.ToString();
+				PlayerPrefs.SetInt("Voxel", Money);
+			}
 		}
 	}
 

@@ -7,14 +7,14 @@ namespace Data
 	public class UserData
 	{
 		public int Money;
-		public List<bool> Skins;
-		public List<int> HighScores;
+		public bool[] Skins;
+		public int[] HighScores;
 
 		public UserData()
 		{
 			Money = 0;
-			Skins = new List<bool>();
-			HighScores = new List<int>();
+			Skins = new bool[1];
+			HighScores = new int[6];
 		}
 	}
 }

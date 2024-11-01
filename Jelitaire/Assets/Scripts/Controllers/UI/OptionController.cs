@@ -40,13 +40,11 @@ public class OptionController : Singleton<OptionController>
 	public void Reset()
 	{
 		ConfirmMessageController msg = ResourceManager.Instance.Instantiate("Prefabs/UI/ConfirmMessage", UICanvas).GetComponent<ConfirmMessageController>();
-		msg.Init("모든 데이터가 사라집니다");
-		msg.Accept.onClick.AddListener(() =>
+		msg.Init("모든 데이터가 사라집니다", () =>
 		{
 			Data.UserData UserData = new Data.UserData();
 			string UserDataPath = Path.Combine(Application.persistentDataPath, "UserData.json");
 			DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
-
 #if UNITY_EDITOR
 			UnityEditor.EditorApplication.isPlaying = false;
 #else

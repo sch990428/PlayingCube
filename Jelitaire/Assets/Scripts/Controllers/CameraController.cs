@@ -46,8 +46,6 @@ public class CameraController : MonoBehaviour
 		Debug.Log("흔들림");
 		while (shakeTime > 0f)
 		{
-			float x = 0;
-			float y = 0;
 			float z = Random.Range(-1f, 1f);
 			transform.position = defaultPos + Random.insideUnitSphere * shakeIntensity;
 

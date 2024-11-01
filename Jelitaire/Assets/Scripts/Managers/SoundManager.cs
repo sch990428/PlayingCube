@@ -39,6 +39,9 @@ public class SoundManager : Singleton<SoundManager>
 	// 사운드 재생
 	public void PlaySound(GameSound type)
 	{
-		audioSource.PlayOneShot(audioClipDict[type]);
+		if (!OptionManager.Instance.OptionData.SoundOff)
+		{
+			audioSource.PlayOneShot(audioClipDict[type]);
+		}
 	}
 }

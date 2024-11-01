@@ -36,8 +36,11 @@ public class CameraController : MonoBehaviour
 		this.shakeTime = shakeTime;
 		this.shakeIntensity = shakeIntensity;
 
-		StopCoroutine(ShakeByPosition());
-		StartCoroutine(ShakeByPosition());
+		if (!OptionManager.Instance.OptionData.ScreenShakeOff)
+		{
+			StopCoroutine(ShakeByPosition());
+			StartCoroutine(ShakeByPosition());
+		}
 	}
 
 	// 위치기반

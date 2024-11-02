@@ -18,9 +18,13 @@ public class InputManager : Singleton<InputManager>
 	public event Action<Vector2> OnTouching;
 	public event Action OnTouchEnd;
 
+	public bool canTouch;
+
 	protected override void Awake()
     {
 		base.Awake();
+
+		canTouch = true;
 
 		// 액션 불러오기
 		playerInput = GetComponent<PlayerInput>();
@@ -45,17 +49,20 @@ public class InputManager : Singleton<InputManager>
 	// 클릭 혹은 터치 최초 입력
 	private void TouchPressed(InputAction.CallbackContext context)
 	{
-		// 레이캐스팅으로 큐브를 선택
-		RaycastHit hit;
-		Ray ray = Camera.main.ScreenPointToRay(touchPositionAction.ReadValue<Vector2>());
-		Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
-
-		if (Physics.Raycast(ray, out hit))
+		if (canTouch)
 		{
-			if (hit.collider.CompareTag("Cube") && OnTouchStart != null)
+			// 레이캐스팅으로 큐브를 선택
+			RaycastHit hit;
+			Ray ray = Camera.main.ScreenPointToRay(touchPositionAction.ReadValue<Vector2>());
+			Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
+
+			if (Physics.Raycast(ray, out hit))
 			{
-				movingCube = hit.collider.GetComponent<CubeController>();
-				OnTouchStart.Invoke(movingCube); // 구독한 큐브 객체들에게 모두 Broadcasting (식별을 위한 movingCube 인자)
+				if (hit.collider.CompareTag("Cube") && OnTouchStart != null)
+				{
+					movingCube = hit.collider.GetComponent<CubeController>();
+					OnTouchStart.Invoke(movingCube); // 구독한 큐브 객체들에게 모두 Broadcasting (식별을 위한 movingCube 인자)
+				}
 			}
 		}
 	}

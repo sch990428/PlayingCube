@@ -20,7 +20,8 @@ public class ConfirmMessageController : MonoBehaviour
             if (OnAccept != null)
             {
                 OnAccept.Invoke();
-            }
+				InputManager.Instance.canTouch = true;
+			}
         });
 	}
 
@@ -28,11 +29,13 @@ public class ConfirmMessageController : MonoBehaviour
     {
         Message.text = msg;
         OnAccept = onAccept;
+        InputManager.Instance.canTouch = false;
     }
     
     public void Close()
     {
 		Time.timeScale = 1f;
 		ResourceManager.Instance.Destroy(gameObject);
-    }
+		InputManager.Instance.canTouch = true;
+	}
 }

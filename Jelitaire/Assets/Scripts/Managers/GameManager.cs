@@ -117,7 +117,6 @@ public class GameManager : Singleton<GameManager>
 		switch (State)
 		{
 			case GameState.Init:
-				SoundManager.Instance.PlaySound(SoundManager.GameSound.Init);
 				ShuffleColor();
 				GameDifficulty = SetGameDifficulty();
 				GameDifficulty.InitQueue();
@@ -172,7 +171,9 @@ public class GameManager : Singleton<GameManager>
 		Board.SetActive(true);
 		TimerUI.SetActive(isTimeAttack);
 		Board.transform.GetComponent<Animator>().SetTrigger("Start");
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.2f);
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.Init);
+		yield return new WaitForSeconds(0.3f);
 		rootY = Board.transform.GetChild(0).position.y;
 		yield return AddNewCubes();
 		yield return AddNewCubes();
@@ -192,9 +193,8 @@ public class GameManager : Singleton<GameManager>
 	private IEnumerator AddNewCubes()
 	{
 		isGenerating = true;
+		yield return new WaitForSeconds(0.3f);
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.AddLine);
-		yield return new WaitForSeconds(0.5f);
-
 		if (GameDifficulty.CubeQueue.Count <= 0)
 		{
 			// Debug.Log(GameDifficulty.CubeQueue.Count);
@@ -299,8 +299,10 @@ public class GameManager : Singleton<GameManager>
 		if (Cubes[i].Count > 7)
 		{
 			// 만일 해당 라인에 쌓인 큐브가 7개를 넘으면 게임오버 상태로 전환
-			State = GameState.GameOver;
-			SoundManager.Instance.PlaySound(SoundManager.GameSound.GameOver);
+			if (State == GameState.Game)
+			{
+				State = GameState.GameOver;
+			}
 		}
 		else if (Cubes[i].Count == 7)
 		{
@@ -328,8 +330,10 @@ public class GameManager : Singleton<GameManager>
 
 	public IEnumerator GameOver()
 	{
-		// 순간적으로 RigidBody에 랜덤한 힘을 주어 큐브를 날려버림
 		yield return new WaitForSeconds(0.2f);
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.GameOver);
+
+		// 순간적으로 RigidBody에 랜덤한 힘을 주어 큐브를 날려버림
 		for (int k = 0; k < rootCount; k++)
 		{
 			foreach (CubeController c in Cubes[k])

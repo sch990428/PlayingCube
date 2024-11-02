@@ -60,7 +60,7 @@ public class OptionController : MonoBehaviour
 	public void Reset()
 	{
 		ConfirmMessageController msg = ResourceManager.Instance.Instantiate("Prefabs/UI/ConfirmMessage", UICanvas).GetComponent<ConfirmMessageController>();
-		msg.Init("모든 데이터가 사라집니다", () =>
+		msg.Init("계속 진행하면 저장된 모든 데이터가 영구적으로 삭제됩니다. 정말로 초기화하시겠습니까?", () =>
 		{
 			Data.UserData UserData = new Data.UserData();
 			string UserDataPath = Path.Combine(Application.persistentDataPath, "UserData.json");

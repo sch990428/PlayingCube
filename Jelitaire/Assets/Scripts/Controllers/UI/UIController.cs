@@ -86,7 +86,7 @@ public class UIController : MonoBehaviour
 			else
 			{
 				ConfirmMessageController msg = ResourceManager.Instance.Instantiate("Prefabs/UI/ConfirmMessage", transform).GetComponent<ConfirmMessageController>();
-				msg.Init("진행중인 게임은 저장되지 않습니다", () =>
+				msg.Init("진행중인 게임은 저장되지 않습니다.", () =>
 				{
 					Time.timeScale = 1.0f;
 					GameOverUI.gameObject.SetActive(false);

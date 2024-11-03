@@ -32,6 +32,9 @@ public class UIController : MonoBehaviour
 	[SerializeField]
 	private TMP_Text ScoreText;
 
+	[SerializeField]
+	private Transform ComboGroup;
+
 	private float switchTerm = 1f; // UI을 전환하는 간격
 	private bool isLoading = false; // UI를 전환하는 도중인가?
 
@@ -179,6 +182,17 @@ public class UIController : MonoBehaviour
 	public void SaveUserData()
 	{
 		DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
+	}
+
+	// 콤보에 따라서 별모양 활성화
+	public void ComboUpdate(int combo)
+	{
+		Debug.Log($"콤보 {combo}");
+
+		for (int i = 0; i < ComboGroup.childCount; i++)
+		{
+			ComboGroup.GetChild(i).gameObject.SetActive(i < combo);
+		}
 	}
 
 	// 게임 종료

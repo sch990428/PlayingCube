@@ -49,6 +49,7 @@ public class GameManager : Singleton<GameManager>
 	public bool isGenerating; // 큐브를 새로 만들고 있는 중인가?
 
 	public int Score; // 게임 점수
+	public int Combo;
 	public event Action OnScoreChanged;
 
 	public float rootY;
@@ -165,6 +166,8 @@ public class GameManager : Singleton<GameManager>
 	{
 		// 게임 시작를 위한 애니메이션과 로직 실행
 		Score = 0;
+		uiController.ComboUpdate(1);
+		Combo = 1;
 		timer = 0f;
 		timerInterval = 20f;
 		OnScoreChanged.Invoke();
@@ -330,6 +333,8 @@ public class GameManager : Singleton<GameManager>
 
 	public void DropWrongCube()
 	{
+		Combo = 1;
+		uiController.ComboUpdate(1);
 		SoundManager.Instance.PlaySound(SoundManager.GameSound.Wrong);
 		Camera.main.GetComponent<CameraController>().OnShakeCameraByRotation();
 		Camera.main.GetComponent<CameraController>().BackgroundEffect(Color.red);
@@ -372,8 +377,11 @@ public class GameManager : Singleton<GameManager>
 			int topCubeIndex = Cubes[i].Count;
 			Cubes[i].RemoveRange(topCubeIndex - 5, 5);
 
-			AddScore(10);
+			AddScore(10 + 5 * (Combo - 1));
 			SoundManager.Instance.PlaySound(SoundManager.GameSound.Pop);
+			Combo = Mathf.Clamp(Combo + 1, 1, 5);
+			uiController.ComboUpdate(Combo);
+			Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition();
 			topCube.Pop();
 		}
 	}

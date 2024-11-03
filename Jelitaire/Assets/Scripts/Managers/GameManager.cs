@@ -331,6 +331,20 @@ public class GameManager : Singleton<GameManager>
 		//Debug.Log($"{i}번 루트 : {str}");
 	}
 
+	public bool CheckAllEmpty()
+	{
+		bool result = true;
+		for (int i = 0; i < rootCount; i++)
+		{
+			if (Cubes[i].Count != 0)
+			{
+				result = false;
+			}
+		}
+
+		return result;
+	}
+
 	public void DropWrongCube()
 	{
 		Combo = 1;
@@ -383,6 +397,14 @@ public class GameManager : Singleton<GameManager>
 			uiController.ComboUpdate(Combo);
 			Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition();
 			topCube.Pop();
+
+			if (CheckAllEmpty())
+			{
+				StartCoroutine(AddNewCubes());
+				// 타이머 초기화
+				timer = 0f;
+				timerInterval = Mathf.Clamp(timerInterval - (Score / 5), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+			}
 		}
 	}
 

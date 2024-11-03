@@ -271,7 +271,6 @@ public class CubeController : MonoBehaviour
 		{
 			isMoving = false;
 			childCount = 0;
-			GameManager.Instance.AddScore(-1);
 
 			int prevX = Mathf.RoundToInt(prevPos.x); // 이전 x좌표
 			int currentX = Mathf.RoundToInt(transform.position.x); // 현재 x좌표
@@ -317,6 +316,7 @@ public class CubeController : MonoBehaviour
 			}
 			//Debug.Log(prevX + 2 + "번 루트 갱신");
 			GameManager.Instance.UpdateLine(prevX + 2);
+			GameManager.Instance.DropWrongCube();
 		}
 	}
 

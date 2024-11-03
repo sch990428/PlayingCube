@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
@@ -8,13 +9,16 @@ public class CameraController : MonoBehaviour
 
 	Vector3 defaultPos;
 	Vector3 defaultRot;
+	Color32 defaultColor;
 
 	Material material;
+	public Image background;
 	
 	private void Awake()
 	{
 		defaultPos = transform.position; // 카메라 초기위치 저장
 		defaultRot = transform.eulerAngles; // 카메라 초기방향 저장
+		defaultColor = background.color;
 
 		// 게임 시작 시 배경색 랜덤하게 변경
 		material = ResourceManager.Instance.Load<Material>("Art/Materials/Skybox");
@@ -30,8 +34,13 @@ public class CameraController : MonoBehaviour
 		material.SetColor("_Tint", newColor);
 	}
 
-	// 카메라 흔들림 효과
-	public void OnShakeCamera(float shakeTime = 0.2f, float shakeIntensity = 0.1f)
+	public void BackgroundEffect(Color32 color)
+	{
+		StartCoroutine(ChangeColor(color, 0.2f));
+	}
+
+	// 카메라 위치기반 흔들림 효과
+	public void OnShakeCameraByPosition(float shakeTime = 0.2f, float shakeIntensity = 0.1f)
 	{
 		this.shakeTime = shakeTime;
 		this.shakeIntensity = shakeIntensity;
@@ -40,6 +49,19 @@ public class CameraController : MonoBehaviour
 		{
 			StopCoroutine(ShakeByPosition());
 			StartCoroutine(ShakeByPosition());
+		}
+	}
+
+	// 카메라 각도기반 흔들림 효과
+	public void OnShakeCameraByRotation(float shakeTime = 0.2f, float shakeIntensity = 0.1f)
+	{
+		this.shakeTime = shakeTime;
+		this.shakeIntensity = shakeIntensity;
+
+		if (!OptionManager.Instance.OptionData.ScreenShakeOff)
+		{
+			StopCoroutine(ShakeByRotation());
+			StartCoroutine(ShakeByRotation());
 		}
 	}
 
@@ -76,5 +98,36 @@ public class CameraController : MonoBehaviour
 
 			yield return null;
 		}
+
+		transform.rotation = Quaternion.Euler(defaultRot);
+	}
+
+	// 뒷배경 색상 바꾸기
+	private IEnumerator ChangeColor(Color32 color, float duration)
+	{
+		color.a = defaultColor.a;
+
+		float elapsed = 0f;
+		while (elapsed < duration)
+		{
+			// 경과 시간에 따라 색상을 Lerp로 서서히 변경
+			background.color = Color.Lerp(defaultColor, color, elapsed / duration);
+			elapsed += Time.deltaTime;
+
+			yield return null; // 다음 프레임까지 대기
+		}
+
+		background.color = color;
+
+		elapsed = 0f;
+		while (elapsed < duration)
+		{
+			// 경과 시간에 따라 색상을 Lerp로 서서히 변경
+			background.color = Color.Lerp(color, defaultColor, elapsed / duration);
+			elapsed += Time.deltaTime;
+
+			yield return null; // 다음 프레임까지 대기
+		}
+		background.color = defaultColor;
 	}
 }

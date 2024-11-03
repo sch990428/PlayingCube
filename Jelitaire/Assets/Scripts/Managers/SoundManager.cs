@@ -16,6 +16,7 @@ public class SoundManager : Singleton<SoundManager>
 		Drop,
 		AddLine,
 		Pop,
+		Wrong,
 		GameOver,
 	}
 

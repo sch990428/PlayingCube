@@ -328,6 +328,14 @@ public class GameManager : Singleton<GameManager>
 		//Debug.Log($"{i}번 루트 : {str}");
 	}
 
+	public void DropWrongCube()
+	{
+		SoundManager.Instance.PlaySound(SoundManager.GameSound.Wrong);
+		Camera.main.GetComponent<CameraController>().OnShakeCameraByRotation();
+		Camera.main.GetComponent<CameraController>().BackgroundEffect(Color.red);
+		AddScore(-1);
+	}
+
 	public IEnumerator GameOver()
 	{
 		yield return new WaitForSeconds(0.2f);

@@ -406,6 +406,7 @@ public class GameManager : Singleton<GameManager>
 			int timerRatio = modeController.GetMode().TimerRatio;
 			timer = 0f;
 			timerInterval = Mathf.Clamp(timerInterval - (Score / timerRatio), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+			// Debug.Log(timerInterval);
 		}
 	}
 

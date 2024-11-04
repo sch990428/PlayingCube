@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -154,11 +155,8 @@ public class GameManager : Singleton<GameManager>
 	{
 		if (!isGenerating && State == GameState.Game)
 		{
-			// 타이머 초기화
-			timer = 0f;
-			timerInterval = Mathf.Clamp(timerInterval - (Score / 5), 7f, 20f); // 진행도에 맞춰 만료시간 설정
 			InputManager.Instance.TouchCancel();
-			StartCoroutine(AddNewCubes());
+			ResetTimerAndCreateNewCubes();
 		}
 	}
 
@@ -400,12 +398,17 @@ public class GameManager : Singleton<GameManager>
 
 			if (CheckAllEmpty())
 			{
-				StartCoroutine(AddNewCubes());
-				// 타이머 초기화
-				timer = 0f;
-				timerInterval = Mathf.Clamp(timerInterval - (Score / 5), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+				ResetTimerAndCreateNewCubes();
 			}
 		}
+	}
+
+	private void ResetTimerAndCreateNewCubes() 
+	{
+		// 타이머 초기화
+		timer = 0f;
+		timerInterval = Mathf.Clamp(timerInterval - (Score / 50), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+		StartCoroutine(AddNewCubes());
 	}
 
 	// 해당 Root의 맨 윗 큐브 반환

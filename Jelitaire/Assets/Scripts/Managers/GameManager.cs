@@ -95,11 +95,20 @@ public class GameManager : Singleton<GameManager>
 		switch (modeController.Selected)
 		{
 			case 1:
+				isTimeAttack = false;
 				return new StarfishEasy();
 			case 2:
+				isTimeAttack = false;
 				return new StarfishNormal();
 			case 3:
+				isTimeAttack = false;
 				return new StarfishHard();
+			case 4:
+				isTimeAttack = true;
+				return new StarfishEasy();
+			case 5:
+				isTimeAttack = true;
+				return new StarfishNormal();
 			default:
 				return null;
 		}
@@ -114,6 +123,7 @@ public class GameManager : Singleton<GameManager>
 				GameDifficulty = SetGameDifficulty();
 				GameDifficulty.InitQueue();
 				StartCoroutine(InitBoard());
+				AddNewCubes();
 				State = GameState.Game;
 				break;
 			case GameState.Exit:
@@ -122,9 +132,7 @@ public class GameManager : Singleton<GameManager>
 				break;
 			case GameState.GameOver:
 				GameOverUI.SetActive(true);
-				float rewardRatio = modeController.GetMode().RewardRatio;
-				if (!isTimeAttack) { rewardRatio = 0; }
-				RewardText.text = ((int)(Score * rewardRatio)).ToString();
+				RewardText.text = (Score / modeController.GetMode().RewardRatio).ToString();
 				StartCoroutine(GameOver());
 				State = GameState.Wait;
 				break;
@@ -148,8 +156,7 @@ public class GameManager : Singleton<GameManager>
 		if (!isGenerating && State == GameState.Game)
 		{
 			InputManager.Instance.TouchCancel();
-			ResetTimer();
-			StartCoroutine(AddNewCubes());
+			ResetTimerAndCreateNewCubes();
 		}
 	}
 
@@ -389,24 +396,19 @@ public class GameManager : Singleton<GameManager>
 			Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition();
 			topCube.Pop();
 
-			ResetTimer();
-
 			if (CheckAllEmpty())
 			{
-				StartCoroutine(AddNewCubes());
+				ResetTimerAndCreateNewCubes();
 			}
 		}
 	}
 
-	private void ResetTimer()
+	private void ResetTimerAndCreateNewCubes() 
 	{
 		// 타이머 초기화
-		if (isTimeAttack)
-		{
-			int timerRatio = modeController.GetMode().TimerRatio;
-			timer = 0f;
-			timerInterval = Mathf.Clamp(timerInterval - (Score / timerRatio), 7f, 20f); // 진행도에 맞춰 만료시간 설정
-		}
+		timer = 0f;
+		timerInterval = Mathf.Clamp(timerInterval - (Score / 50), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+		StartCoroutine(AddNewCubes());
 	}
 
 	// 해당 Root의 맨 윗 큐브 반환

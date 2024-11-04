@@ -148,7 +148,8 @@ public class GameManager : Singleton<GameManager>
 		if (!isGenerating && State == GameState.Game)
 		{
 			InputManager.Instance.TouchCancel();
-			ResetTimerAndCreateNewCubes();
+			ResetTimer();
+			StartCoroutine(AddNewCubes());
 		}
 	}
 
@@ -388,14 +389,16 @@ public class GameManager : Singleton<GameManager>
 			Camera.main.GetComponent<CameraController>().OnShakeCameraByPosition();
 			topCube.Pop();
 
+			ResetTimer();
+
 			if (CheckAllEmpty())
 			{
-				ResetTimerAndCreateNewCubes();
+				StartCoroutine(AddNewCubes());
 			}
 		}
 	}
 
-	private void ResetTimerAndCreateNewCubes() 
+	private void ResetTimer()
 	{
 		// 타이머 초기화
 		if (isTimeAttack)
@@ -404,8 +407,6 @@ public class GameManager : Singleton<GameManager>
 			timer = 0f;
 			timerInterval = Mathf.Clamp(timerInterval - (Score / timerRatio), 7f, 20f); // 진행도에 맞춰 만료시간 설정
 		}
-		
-		StartCoroutine(AddNewCubes());
 	}
 
 	// 해당 Root의 맨 윗 큐브 반환

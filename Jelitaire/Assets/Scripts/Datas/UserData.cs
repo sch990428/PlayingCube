@@ -13,7 +13,7 @@ namespace Data
 		public UserData()
 		{
 			Money = 0;
-			Skins = new bool[1];
+			Skins = new bool[6];
 			HighScores = new int[6];
 		}
 	}

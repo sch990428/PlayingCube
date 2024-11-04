@@ -47,6 +47,8 @@ public class CubeController : MonoBehaviour
 		animator = GetComponent<Animator>();
 		render = GetComponent<Renderer>();
 
+		render.material = GameManager.Instance.material;
+
 		isMoving = false;
 		isDestroying = false;
 	}

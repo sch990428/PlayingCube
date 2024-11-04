@@ -60,6 +60,9 @@ public class GameManager : Singleton<GameManager>
 	public float timer; // 현재 타이머
 	public float timerInterval; // 타이머 만료 시간
 
+	// 장착한 스킨 마테리얼
+	public Material material;
+
 	protected override void Awake()
     {
 		base.Awake();

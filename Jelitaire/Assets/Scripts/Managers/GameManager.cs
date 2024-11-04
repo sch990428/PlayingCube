@@ -95,20 +95,11 @@ public class GameManager : Singleton<GameManager>
 		switch (modeController.Selected)
 		{
 			case 1:
-				isTimeAttack = false;
 				return new StarfishEasy();
 			case 2:
-				isTimeAttack = false;
 				return new StarfishNormal();
 			case 3:
-				isTimeAttack = false;
 				return new StarfishHard();
-			case 4:
-				isTimeAttack = true;
-				return new StarfishEasy();
-			case 5:
-				isTimeAttack = true;
-				return new StarfishNormal();
 			default:
 				return null;
 		}

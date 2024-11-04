@@ -57,7 +57,9 @@ public class UIController : MonoBehaviour
 	}
 
 	public void OnPlayButtonClicked()
+	public void OnPlayButtonClicked(bool timeattack)
 	{
+		GameManager.Instance.isTimeAttack = timeattack;
 		if (!isLoading)
 		{
 			StartCoroutine(SwitchToGameUI());

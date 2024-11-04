@@ -22,6 +22,9 @@ public class UIController : MonoBehaviour
 	private Transform GameUI;
 
 	[SerializeField]
+	private Transform ShopUI;
+
+	[SerializeField]
 	public Button GameOverUI;
 
 	[SerializeField]

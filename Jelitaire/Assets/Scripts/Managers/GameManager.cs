@@ -133,6 +133,7 @@ public class GameManager : Singleton<GameManager>
 			case GameState.GameOver:
 				GameOverUI.SetActive(true);
 				RewardText.text = (Score / modeController.GetMode().RewardRatio).ToString();
+				RewardText.text = ((int)(Score * rewardRatio)).ToString();
 				StartCoroutine(GameOver());
 				State = GameState.Wait;
 				break;

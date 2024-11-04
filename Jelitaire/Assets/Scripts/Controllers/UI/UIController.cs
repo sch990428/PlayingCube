@@ -78,6 +78,7 @@ public class UIController : MonoBehaviour
 
 				Data.GameMode mode = ModeSelectUI.GetComponent<ModeController>().GetMode();
 				UserData.Money += GameManager.Instance.Score / mode.RewardRatio;
+				UserData.Money += (int)(GameManager.Instance.Score * rewardRatio);
 				MoneyText.text = UserData.Money.ToString();
 
 				SaveUserData();

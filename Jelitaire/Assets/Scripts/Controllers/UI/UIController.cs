@@ -56,7 +56,6 @@ public class UIController : MonoBehaviour
 		MoneyText.text = UserData.Money.ToString();
 	}
 
-	public void OnPlayButtonClicked()
 	public void OnPlayButtonClicked(bool timeattack)
 	{
 		GameManager.Instance.isTimeAttack = timeattack;
@@ -78,8 +77,11 @@ public class UIController : MonoBehaviour
 					UserData.HighScores[modeId] = GameManager.Instance.Score;
 				}
 
-				Data.GameMode mode = ModeSelectUI.GetComponent<ModeController>().GetMode();
-				UserData.Money += GameManager.Instance.Score / mode.RewardRatio;
+				float rewardRatio = ModeSelectUI.GetComponent<ModeController>().GetMode().RewardRatio;
+				if (!GameManager.Instance.isTimeAttack)
+				{
+					rewardRatio = 0;
+				}
 				UserData.Money += (int)(GameManager.Instance.Score * rewardRatio);
 				MoneyText.text = UserData.Money.ToString();
 

@@ -114,7 +114,6 @@ public class GameManager : Singleton<GameManager>
 				GameDifficulty = SetGameDifficulty();
 				GameDifficulty.InitQueue();
 				StartCoroutine(InitBoard());
-				AddNewCubes();
 				State = GameState.Game;
 				break;
 			case GameState.Exit:
@@ -123,7 +122,8 @@ public class GameManager : Singleton<GameManager>
 				break;
 			case GameState.GameOver:
 				GameOverUI.SetActive(true);
-				RewardText.text = (Score / modeController.GetMode().RewardRatio).ToString();
+				float rewardRatio = modeController.GetMode().RewardRatio;
+				if (!isTimeAttack) { rewardRatio = 0; }
 				RewardText.text = ((int)(Score * rewardRatio)).ToString();
 				StartCoroutine(GameOver());
 				State = GameState.Wait;

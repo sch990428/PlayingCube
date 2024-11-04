@@ -288,6 +288,7 @@ public class CubeController : MonoBehaviour
 					Parent = topCube;
 					GameManager.Instance.UpdateLine(currentX + 2);
 					SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
+					GameManager.Instance.DropRightCube();
 					return;
 				}
 			}
@@ -299,6 +300,7 @@ public class CubeController : MonoBehaviour
 				Parent = null;
 				GameManager.Instance.UpdateLine(currentX + 2);
 				SoundManager.Instance.PlaySound(SoundManager.GameSound.Drop);
+				GameManager.Instance.DropRightCube();
 				return;
 			}
 

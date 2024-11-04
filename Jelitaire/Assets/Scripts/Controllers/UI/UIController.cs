@@ -190,7 +190,7 @@ public class UIController : MonoBehaviour
 	// 콤보에 따라서 별모양 활성화
 	public void ComboUpdate(int combo)
 	{
-		Debug.Log($"콤보 {combo}");
+		// Debug.Log($"콤보 {combo}");
 
 		for (int i = 0; i < ComboGroup.childCount; i++)
 		{

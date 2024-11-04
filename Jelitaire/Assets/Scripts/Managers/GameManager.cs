@@ -336,6 +336,11 @@ public class GameManager : Singleton<GameManager>
 		return result;
 	}
 
+	public void DropRightCube()
+	{
+		Camera.main.GetComponent<CameraController>().BackgroundEffect(Color.white);
+	}
+
 	public void DropWrongCube()
 	{
 		Combo = 1;
@@ -405,7 +410,8 @@ public class GameManager : Singleton<GameManager>
 		{
 			int timerRatio = modeController.GetMode().TimerRatio;
 			timer = 0f;
-			timerInterval = Mathf.Clamp(timerInterval - (Score / timerRatio), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+			timerInterval = Mathf.Clamp(20f - (Score / timerRatio), 5f, 20f); // 진행도에 맞춰 만료시간 설정
+			// Debug.Log(timerInterval);
 		}
 	}
 

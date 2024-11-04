@@ -53,6 +53,7 @@ public class UIController : MonoBehaviour
 		if (UserData == null)
 		{
 			UserData = new Data.UserData();
+			UserData.Skins[0] = true;
 			DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
 		}
 

@@ -3805,8 +3805,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 788bdf5724a27f148aed1da851f39060, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIController: {fileID: 905674948}
   SkinName: {fileID: 1575380267}
   Preview: {fileID: 8193730606933224671}
+  ApplyButton: {fileID: 1388191673}
+  PurchaseButton: {fileID: 1617130352}
   index: 0
   maxIndex: 0
 --- !u!114 &878343162
@@ -6339,7 +6342,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1388191672
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6403,7 +6406,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1388191674}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 878343161}
+        m_TargetAssemblyTypeName: ShopController, Assembly-CSharp
+        m_MethodName: Select
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1388191674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6623,6 +6638,7 @@ MonoBehaviour:
   isTimeAttack: 0
   timer: 0
   timerInterval: 0
+  material: {fileID: 0}
 --- !u!1 &1545483942
 GameObject:
   m_ObjectHideFlags: 0
@@ -7029,7 +7045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1617130351
 RectTransform:
   m_ObjectHideFlags: 0

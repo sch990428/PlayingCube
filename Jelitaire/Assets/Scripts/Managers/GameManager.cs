@@ -398,8 +398,13 @@ public class GameManager : Singleton<GameManager>
 	private void ResetTimerAndCreateNewCubes() 
 	{
 		// 타이머 초기화
-		timer = 0f;
-		timerInterval = Mathf.Clamp(timerInterval - (Score / 70), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+		if (isTimeAttack)
+		{
+			int timerRatio = modeController.GetMode().TimerRatio;
+			timer = 0f;
+			timerInterval = Mathf.Clamp(timerInterval - (Score / timerRatio), 7f, 20f); // 진행도에 맞춰 만료시간 설정
+		}
+		
 		StartCoroutine(AddNewCubes());
 	}
 

@@ -60,13 +60,14 @@ public class GameManager : Singleton<GameManager>
 	public float timer; // 현재 타이머
 	public float timerInterval; // 타이머 만료 시간
 
+	public Dictionary<int, Data.SkinData> SkinDict;
 	// 장착한 스킨 마테리얼
 	public Material material;
 
 	protected override void Awake()
     {
 		base.Awake();
-
+		SkinDict = DataManager.Instance.LoadJsonToDict<Data.SkinData>("Datas/skins");
 		// Cubes 및 게임 상태 초기화
 		Cubes = new List<CubeController>[rootCount];
 		for (int i = 0; i < rootCount; i++)
@@ -116,6 +117,8 @@ public class GameManager : Singleton<GameManager>
 				ShuffleColor();
 				GameDifficulty = SetGameDifficulty();
 				GameDifficulty.InitQueue();
+				int currentSkin = uiController.UserData.CurrentSkins;
+				material = ResourceManager.Instance.Load<Material>($"Art/Materials/Cube/{SkinDict[currentSkin].SkinMaterialPath}");
 				StartCoroutine(InitBoard());
 				State = GameState.Game;
 				break;

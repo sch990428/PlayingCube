@@ -57,6 +57,11 @@ public class UIController : MonoBehaviour
 			DataManager.Instance.SaveClassToJson<Data.UserData>(UserDataPath, UserData);
 		}
 
+		UpdateMoney();
+	}
+
+	public void UpdateMoney()
+	{
 		MoneyText.text = UserData.Money.ToString();
 	}
 
@@ -87,7 +92,7 @@ public class UIController : MonoBehaviour
 					rewardRatio = 0;
 				}
 				UserData.Money += (int)(GameManager.Instance.Score * rewardRatio);
-				MoneyText.text = UserData.Money.ToString();
+				UpdateMoney();
 
 				SaveUserData();
 				GameOverUI.gameObject.SetActive(false);

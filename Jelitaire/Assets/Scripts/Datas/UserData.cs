@@ -9,6 +9,7 @@ namespace Data
 		public int Money;
 		public bool[] Skins;
 		public int[] HighScores;
+		public int CurrentSkins;
 
 		public UserData()
 		{

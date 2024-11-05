@@ -1,3 +1,9 @@
+1부터 5까지 같은 색상의 큐브를 순서대로 쌓아 터트리는 캐주얼퍼즐게임입니다.
+다른 색상의 큐브는 서로 순서대로 쌓을 수는 있지만 함께 옮기는 것은 불가능합니다!
+난이도가 어려울수록 더 많은 보상이 주어집니다. 보상을 모아서 새로운 테마도 구매해보세요!
+
+다운로드 : https://drive.google.com/file/d/1-bfjuMI__R_u2AZjj1Z7y8SH4bljVMn3/view?usp=sharing
+
 ![Animation](https://github.com/user-attachments/assets/ab88c6c4-178f-4854-99bc-afe373289ce7)
 
 ![image](https://github.com/user-attachments/assets/ffe86986-1cd4-44fa-9f5d-d85f1b87fb11)

@@ -46,6 +46,12 @@ public class ShopController : MonoBehaviour
 		ChangeIndex();
 	}
 
+	private void OnEnable()
+	{
+		index = UIController.UserData.CurrentSkins;
+		ChangeIndex();
+	}
+
 	public void ChangeIndex()
     {
         SkinName.text = SkinDict[index].SkinName;

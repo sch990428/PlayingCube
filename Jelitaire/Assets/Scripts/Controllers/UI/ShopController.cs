@@ -103,7 +103,7 @@ public class ShopController : MonoBehaviour
 		if (!UIController.UserData.Skins[index] && UIController.UserData.Money >= SkinDict[index].SkinPrice)
 		{
 			// 구매 로직
-			ConfirmMessageController msg = ResourceManager.Instance.Instantiate("Prefabs/UI/ConfirmMessage", transform).GetComponent<ConfirmMessageController>();
+			ConfirmMessageController msg = ResourceManager.Instance.Instantiate("Prefabs/UI/ConfirmMessage", UIController.transform).GetComponent<ConfirmMessageController>();
 			msg.Init("정말 구매하시겠습니까?", () =>
 			{
 				Time.timeScale = 1.0f;
